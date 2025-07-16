@@ -1,0 +1,20 @@
+<% /* dette er en testside: http://localhost:3000/test_centreret_indhold_med_header_og_footer */ %>
+
+<%- include('../shared/includes/all/head-all', {
+	stylesheets: ['/styles/shared/centered-content-form-pages.css'],
+})
+%>
+<%- include('../visitor/includes/shared/header-visitor', {contentWrapperAddClasses: 'd-flex align-items-center justify-content-center bg-primary bg-gradient'}) /* "flex-fill"-class er allerede tilføjet i header.ejs */ %>
+
+<div class="container-lg containerExtraNarrow my-1"> <% /* "my-4" indsættes dynamisk hvis indhold (inkl. 4px margin i top og bund) af .container-lg er mindre end viewport (se "centered-content-form-pages.js") */ %>
+	<section class="border rounded-3 bg-body-tertiary shadow-lg">
+		<div class="row p-3 p-sm-4 px-md-5">
+			<div class="col-12 text-center">
+				<p>hej med dig 1 hej med dig 2 hej med dig 3 hej med dig 4 hej med dig 5 </p>
+			</div>
+		</div>
+	</section>
+</div>
+
+<%- include('../visitor/includes/shared/footer-visitor') %>
+<%- include('../shared/includes/all/foot-all') %>

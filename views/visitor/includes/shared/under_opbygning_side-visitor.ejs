@@ -1,0 +1,20 @@
+<%
+/* Få fat i nuværende url og tag den sidste dele efter sidste forward-slash (/) */
+const currentPathClean = locals.currentPath.match(/[^\/]+$/);
+/* hvis ovenstående findes så lav første bogstav stort */
+const currentPathCleanCapitalized = currentPathClean ? currentPathClean[0].charAt(0).toUpperCase()+currentPathClean[0].slice(1) : '';
+/* indsæt det som en standard-værdi i h1 som bruges når der ikke er sat en custom værdi */
+%>
+<div class="containerLg container-lg">
+	<section id="topSection" class="my-5">
+		<div class="row justify-content-center text-center pt-2 pt-lg-4">
+			<div class="col-lg-8 mb-4">
+				<h1 class="display-4 fw-bold"><%= locals.h1 ?? currentPathCleanCapitalized; %></h1>
+				<p class="lead">Denne side er under opbygning...</p>
+				<br>
+				<p class="lead">Men du kan allerede nu oprette en bruger og prøve de fede funktioner fuldstændig gratis.</p>
+				<a class="btn btn-primary" href="/auth/tilmeld">Opret bruger</a>
+			</div>
+		</div>
+	</section>
+</div>

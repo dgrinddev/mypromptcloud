@@ -1,0 +1,47 @@
+<%
+/* eksempel: include('nav-logo-img', {logoFileType: '...', containerTag: '...', containerClass: '...', containerId: '...', viewBoxValue: '...', filenameOrId: '...'}) */
+
+/* logoFileType: 'svg' eller 'img'. Bemærk at det måske er nødvendigt at ændre noget i css fil ved skift af logoFileType */
+const fileType = locals.logoFileType ?? 'svg';
+/* containerTag: 'a' hvis det skal være et logo-link og 'div' hvis det ikke skal være et logo man kan klikke på */
+const tag = locals.containerTag ?? 'a';
+/* viewBoxValue: denne indstilles til det rigtige for billedet */
+const viewBox = locals.viewBoxValue ?? '0 0 186 41';
+
+let fileOrId;
+let elemClass;
+let elemId;
+
+/* hvis det ikke er et svg-billede:  */
+if (fileType === 'img') {
+	/* tildel det id specificeret i include('nav-logo-img', {containerId: '...'}). Hvis intet specificeret så bruges 'navbarBrandImgContainer' */
+	elemId = locals.containerId ?? 'navbarBrandImgContainer';
+	/* tildel de classes specificeret i include('nav-logo-img', {containerClass: '...'}). Hvis intet specificeret så bruges en række standard classes */
+	elemClass = locals.containerClass ?? 'd-flex navbar-brand me-2';
+	/* tildel filnavn eller id specificeret i include('nav-logo-img', {filenameOrId: '...'}). Hvis intet specificeret så bruges et standard filnavn */
+	fileOrId = locals.filenameOrId ?? 'logo.png';
+	%>
+	<<%= tag %> id="<%= elemId %>" class="<%= elemClass %>" href="/forside">
+		<div class="navImgContainer">
+			<img id="navLogoImg" src="/images/shared/header/<%= fileOrId %>" alt="logo" class="navImg">
+		</div>
+	</<%= tag %>>
+<%
+} else if (fileType === 'svg') {
+	/* tildel det id specificeret i include('nav-logo-img', {containerId: '...'}). Hvis intet specificeret så bruges 'navbarBrandImgContainer' */
+	elemId = locals.containerId ?? 'navbarBrandSvgContainer';
+	/* tildel de classes specificeret i include('nav-logo-img', {containerClass: '...'}). Hvis intet specificeret så bruges en række standard classes */
+	/* bemærk: "link-primary"-class gør logoets ikon blåt. du kan ændre den til en anden bootstrap class for en anden farve eller udelade den hvis du vil indstille din egen farve (men så er det ikke sikkert hover effekt virker) */
+	elemClass = locals.containerClass ?? 'd-flex navbar-brand link-primary me-2';
+	/* tildel filnavn eller id specificeret i include('nav-logo-img', {filenameOrId: '...'}). Hvis intet specificeret så bruges et standard fil id */
+	fileOrId = locals.filenameOrId ?? 'logo';
+	%>
+	<<%= tag %> id="<%= elemId %>" class="<%= elemClass %>" href="/forside">
+		<div class="">
+			<% /* vigtigt at viewBox="..." er der ellers vil svg optage mere plads end den burde */ %>
+			<svg id="navLogoImg" class="navImg" viewBox="<%= viewBox %>"><use xlink:href="#<%= fileOrId %>"></use></svg>
+		</div>
+	</<%= tag %>>
+<%
+}
+%>

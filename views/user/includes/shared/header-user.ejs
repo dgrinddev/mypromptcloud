@@ -1,0 +1,138 @@
+<% /* alt i headeren der vises på alle user sider */ %>
+<header id="headerUser" class="border-bottom <%= `${locals.borderClasses_headerUser_contentHeader_sidebar} ${locals.headerBgColor}` %>">
+	<nav id="headerNavbar" class="navbar<%= `${locals.showHeaderNavbarCollapse ? (locals.collapseSidebarOpenAsDefault ? ' navbar-expand-xl' : ' navbar-expand-lg') : ''} ${locals.cardLayout_headerNavbar_paddingYClasses}` %>">
+		<div id="headerNavbarInside" class="container-fluid justify-content-start justify-content-sm-end <%= `${locals.cardLayout_headerNavbarInside_gyClasses} ${locals.cardLayout_containerAndRowClasses}` %>">
+			<% /*
+			Der er logo i header på `md` og op uanset om sidebar åben eller ej (for alt under `md` er logo i sidebar)
+
+			navbar i header: expander (toggle btn forsvinder) på `lg` og op når collapseSidebar skjult og `xl` når collapseSidebar er vist
+
+			Bemærk: `order`-css property er som standard 0 ved alle elementer så derfor er det ikke så vigtigt hvilken order værdi jeg giver elementerne i #headerNavbar bare de er over 0 og at dem som skal vises senere end de andre ikke har en lavere værdi.
+			Derfor har jeg givet order-1 til #newPromptBtn samt de sibling elementer som kommer derefter fordi det er de eneste elementer der bliver påvirket når #headerNavbarCollapse bliver flyttet længere op/tilbage i koden når #headerNavbar expander.
+			Derefter har jeg givet #headerNavbarCollapse `order-xl-0` (kun hvis collapseSidebar er vist) og `order-lg-0` (kun hvis collapseSidebar er skjult) fordi så vil den på lg-skærmstørrelse og xl-skærmstørrelse (afhængig af om collapseSidebar er vist eller skjult) komme før #newPromptBtn og de andre sibling elementer som er efter denne (da de har order-1).
+
+			der hvor der indsættes nav items i header (`btnGroup.headerNavBtnGroupNavItems.forEach(...`) der er brugt `justify-content-start`-class og `text-start`-class på "a"-elementerne. dette er nødvendigt fordi det ser ikke særlig pænt ud med centreret justering da det skaber en uens styling.
+			*/ %>
+
+			<% /* knap til offcanvasSidebar */ %>
+			<div class="flex-fill">
+				<button id="offcanvasSidebarToggler" class="offcanvasAndCollapseSidebarToggler btn btn-light <%= locals.collapseSidebarOpenAsDefault || locals.reverseHeaderAndBodyBgColors ? 'btnExtraLight' : 'btnLight'; %> btn-sm d-flex align-items-center pe-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar" aria-label="Toggle prompt sidebar">
+					<svg class="HeaderNavBtnIcon flex-shrink-0"><use xlink:href="#bootstrapIcon-arrow-bar-right"></use></svg>
+					<% /* <span class="d-none">Prompts</span> */ %>
+					<span><span class="invisible">.</span><br><span class="invisible">.</span></span>
+				</button>
+			</div>
+
+			<% /* knap til collapseSidebar */ %>
+			<div class="flex-fill">
+				<button id="collapseSidebarToggler" class="offcanvasAndCollapseSidebarToggler btn btn-light <%= locals.collapseSidebarOpenAsDefault || locals.reverseHeaderAndBodyBgColors ? 'btnExtraLight' : 'btnLight'; %> btn-sm d-flex align-items-center pe-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSidebar" aria-controls="collapseSidebar" aria-label="Toggle prompt sidebar" aria-expanded="<%= locals.collapseSidebarOpenAsDefault ? 'true' : 'false'; %>">
+					<svg class="HeaderNavBtnIcon flex-shrink-0"><use xlink:href="#bootstrapIcon-arrow-bar-<%= locals.collapseSidebarOpenAsDefault ? 'left' : 'right'; %>"></use></svg>
+					<% /* <span class="d-none">Prompts</span> */ %>
+					<span><span class="invisible">.</span><br><span class="invisible">.</span></span>
+				</button>
+			</div>
+
+			<% if (!locals.alwaysShowLogoInSidebar) { %>
+				<%- include('../../../shared/includes/nav-logo-img', {logoFileType: 'svg', containerTag: 'div', containerId: 'headerNavbarBrandSvgContainer', containerClass: `navLogoImg-full d-none ms-2 d-md-flex flex-fill link-primary`}) %>
+			<% } %>
+
+			<a id="newPromptBtn" class="btn btn-primary btn-sm order-1 ms-2 d-flex align-items-center" href="/user/prompt/add-or-edit">
+				<svg class="HeaderNavBtnIcon flex-shrink-0 me-2"><use xlink:href="#bootstrapIcon-plus-circle"></use></svg>
+				<span>Tilføj<br>Prompt</span>
+			</a>
+
+			<div id="userDropdownContainer" class="dropdown order-1 ms-2">
+				<%- include('../../../shared/includes/user-dropdown', {navLinkAddClasses: locals.navLinkAddClasses, dropdownToggleAddClasses: `btn-light ${locals.collapseSidebarOpenAsDefault || locals.reverseHeaderAndBodyBgColors ? 'btnExtraLight' : 'btnLight'}`}) %>
+			</div>
+
+			<% const headerNavbarToggler_animated = true; %>
+			<% if (locals.showHeaderNavbarCollapse) { %>
+				<button id="headerNavbarToggler" class="navbar-toggler navbarTogglerAnimated order-1 ms-2<%= locals.collapseSidebarOpenAsDefault ? ' ms-xl-0' : ' ms-lg-0'; %> btn btn-light <%= locals.collapseSidebarOpenAsDefault || locals.reverseHeaderAndBodyBgColors ? 'btnExtraLight' : 'btnLight'; %><%= locals.headerNavbarOpenAsDefault ? '' : ' collapsed'; %>" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbarCollapse" aria-controls="headerNavbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+					<% if (headerNavbarToggler_animated) { %>
+						<span class="icon-container">
+							<span class="navbarTogglerIcon"></span>
+							<span class="navbarTogglerIcon"></span>
+							<span class="navbarTogglerIcon"></span>
+						</span>
+					<% } else { %>
+						<span class="navbar-toggler-icon"></span>
+					<% } %>
+				</button>
+
+				<div class="collapse navbar-collapse<%= locals.headerNavbarOpenAsDefault ? ' show' : ''; %> order-1 mt-1 mt-sm-2 <%= locals.collapseSidebarOpenAsDefault ? 'ms-xl-2 order-xl-0 mt-xl-0' : 'ms-lg-2 order-lg-0 mt-lg-0'; %>" id="headerNavbarCollapse">
+					<%
+					const allHeaderNavBtnGroupNavItems = [
+						{
+							btnId: 'btnGroup_oversigt',
+							href: '/user/oversigt',
+							iconId: 'bootstrapIcon-speedometer2',
+							content: 'Oversigt',
+						},
+						{
+							btnId: 'btnGroup_share',
+							href: '/user/share',
+							iconId: 'bootstrapIcon-share',
+							content: 'Deling & Samarbejde',
+						},
+						{
+							btnId: 'btnGroup_history',
+							href: '/user/history',
+							iconId: 'bootstrapIcon-clock-history',
+							content: 'Historik & Versionering',
+						},
+						/*
+						{
+							btnId: 'btnGroup_support',
+							href: '/user/support',
+							iconId: 'bootstrapIcon-question-circle',
+							content: 'Support & Hjælp',
+						},
+						*/
+						{
+							btnId: 'btnGroup_export-import',
+							href: '/user/export-import',
+							iconId: 'bootstrapIcon-cloud-download',
+							content: 'Eksport / Import',
+						},
+					];
+					const headerNavBtnGroups = [
+						{
+							id: 'headerNavBtnGroup',
+							class: `btn-group d-none ${locals.collapseSidebarOpenAsDefault ? 'd-lg-inline-flex w-100-lg' : 'd-md-inline-flex w-100-md'}`,
+							headerNavBtnGroupNavItems: allHeaderNavBtnGroupNavItems
+						},
+						{
+							id: 'headerNavBtnGroup_XsAndSm_left',
+							class: `btn-group-vertical w-100`,
+							codeAtStart: `<div id="headerNavBtnGroup_XsAndSm" class="d-inline-flex w-100 ${locals.collapseSidebarOpenAsDefault ? 'd-lg-none' : 'd-md-none'}">`,
+							codeAtEnd: ``,
+							headerNavBtnGroupNavItems: allHeaderNavBtnGroupNavItems.slice(0, 2)
+						},
+						{
+							id: 'headerNavBtnGroup_XsAndSm_right',
+							class: `btn-group-vertical w-100`,
+							codeAtStart: ``,
+							codeAtEnd: `</div>`,
+							headerNavBtnGroupNavItems: allHeaderNavBtnGroupNavItems.slice(2)
+						},
+					];
+					headerNavBtnGroups.forEach((btnGroup) => { %>
+						<%- btnGroup.codeAtStart ?? ''; %>
+						<div id="<%= btnGroup.id %>" class="<%= btnGroup.class %>" role="group" aria-label="Navigation of pages">
+							<% btnGroup.headerNavBtnGroupNavItems.forEach((navItem) => { %>
+								<a id="<%= navItem.btnId %>" class="btn btn-outline-link <%= locals.collapseSidebarOpenAsDefault || locals.reverseHeaderAndBodyBgColors ? 'btnExtraLightLink' : 'btnLightLink'; %> btn-sm d-flex px-2 justify-content-start text-start<%= btnGroup.id == 'headerNavBtnGroup' ? ' w-100' : ''; %> <%= locals.navLinkAddClasses %><%= locals.currentPath === navItem.href ? ' active' : ''; %>"<%- locals.currentPath === navItem.href ? ' aria-current="page"' : ''; %> href="<%= navItem.href %>">
+								<span class="d-flex align-items-center">
+									<svg class="HeaderNavBtnIcon flex-shrink-0 me-2"><use xlink:href="#<%= navItem.iconId %>"></use></svg>
+									<span><%= navItem.content %></span>
+								</span>
+								</a>
+							<% }); %>
+						</div>
+						<%- btnGroup.codeAtEnd ?? ''; %>
+					<% }); %>
+				</div>
+			<% } %>
+
+		</div>
+	</nav>
+</header>

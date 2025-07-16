@@ -1,0 +1,7 @@
+/* ______ styles til includes/footer-visitor.ejs ______ */
+
+/* størrelsen af SoMe-ikoner */
+#footerSoMeIconsList .svgIcon {
+	width: 24px;
+	height: 24px;
+}

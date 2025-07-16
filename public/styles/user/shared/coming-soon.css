@@ -1,0 +1,38 @@
+#contentWrapper {
+	background-image: 
+		linear-gradient(rgba(252, 252, 253, 0.8), rgba(252, 252, 253, 0.8)), /* Color overlay */
+		url('/images/user/shared/building-website.svg'); /* Background image */
+	background-position: center; /* Center horizontally, 127px from the top */
+	background-size: contain; /* Ensures the image scales to fit */
+	background-repeat: no-repeat; /* Prevents the background from repeating */
+}
+
+#comingSoonTop p {
+	max-width: 200px;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#comingSoonCenter h1,
+#comingSoonCenter h2 {
+	text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+#newPromptBtn_Arrow {
+	width: 30px;
+	height: 30px;
+	margin-right: 115px;
+}
+
+/* på lg-breakpoint og op når sidebar er lukket */
+@media (min-width: 992px) {
+	.sidebar-closed #newPromptBtn_Arrow {
+		margin-right: 57px !important;
+	}
+}
+
+/* på xl-breakpoint og op når sidebar er åben */
+@media (min-width: 1200px) {
+	.sidebar-open #newPromptBtn_Arrow {
+		margin-right: 57px !important;
+	}
+}

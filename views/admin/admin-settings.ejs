@@ -1,0 +1,66 @@
+<%- include('../shared/includes/all/head-all', {
+	svgIncludes: [
+		'../svg/icons/bootstrap-icons/bi-person-circle',
+		'../svg/icons/bootstrap-icons/bi-exclamation-triangle-fill',
+		'../svg/icons/bootstrap-icons/bi-check-circle-fill',
+		'../svg/icons/bootstrap-icons/bi-arrow-left',
+		'../svg/icons/bootstrap-icons/bi-box-arrow-left',
+	],
+	stylesheets: ['/styles/admin/admin-settings.css'],
+})
+%>
+<div id="contentWrapper" class="flex-fill d-flex align-items-center justify-content-center bg-dark bg-gradient"><% /* opening contentWrapper */ %>
+	<main><% /* opening main tag */ %>
+
+		<div class="container-lg containerNarrow my-1"> <% /* "my-4" indsættes dynamisk hvis indhold (inkl. 4px margin i top og bund) af .container-lg er mindre end viewport (se "centered-content-form-pages.js") */ %>
+			<section class="border rounded-3 bg-body-tertiary shadow-lg">
+				<div class="row p-3 p-sm-4 px-md-5">
+					<div class="col-12 mb-3 d-flex">
+						<h1 class="h3 mb-0 fw-normal flex-fill me-2">Admin Indstillinger</h1>
+						<nav class="dropdown">
+							<% /* const navLinkAddClasses = ' link-body-emphasis'; */ %>
+							<% const navLinkAddClasses = ''; %>
+							<%- include('../shared/includes/user-dropdown', {dropdownToggleAddClasses: 'btn-light btnLight py-0', navLinkAddClasses: navLinkAddClasses}) %>
+						</nav>
+					</div>
+					<% if (locals.inputData.message) { %>
+						<%- include('../shared/includes/message') %>
+					<% } %>
+					<div class="col-12 mb-3">
+						<form action="/admin/admin-settings" method="POST">
+							<input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+							<div class="mb-3">
+								<label for="soMeIconsColor" class="form-label">Vælg en farve til sociale medier ikoner i footer</label>
+								<input type="color" class="form-control form-control-color" id="soMeIconsColor" name="soMeIconsColor" value="<%= inputData.soMeIconsColor %>" title="Vælg en farve til sociale medier ikoner i footer" required>
+							</div>
+							<fieldset class="mb-3">
+								<legend class="col-form-label">Vis disse sociale medier ikoner i footer (mindst 1)</legend>
+								<div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="checkbox" name="soMeIconX_checkbox" id="soMeIconX_checkbox" value="<%= inputData.soMeIconX_checkbox %>"<%= parseInt(inputData.soMeIconX_checkbox) ? ' checked' : ''; %>>
+										<label class="form-check-label" for="soMeIconX_checkbox">X</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="checkbox" name="soMeIconInsta_checkbox" id="soMeIconInsta_checkbox" value="<%= inputData.soMeIconInsta_checkbox %>"<%= parseInt(inputData.soMeIconInsta_checkbox) ? ' checked' : ''; %>>
+										<label class="form-check-label" for="soMeIconInsta_checkbox">Instagram</label>
+									</div>
+									<div class="form-check form-check-inline">
+										<input class="form-check-input" type="checkbox" name="soMeIconFacebook_checkbox" id="soMeIconFacebook_checkbox" value="<%= inputData.soMeIconFacebook_checkbox %>"<%= parseInt(inputData.soMeIconFacebook_checkbox) ? ' checked' : ''; %>>
+										<label class="form-check-label" for="soMeIconFacebook_checkbox">Facebook</label>
+									</div>
+								</div>
+							</fieldset>
+							<div class="form-text mb-3 mt-0">
+								<strong>Bemærk:</strong> formålet med disse indstillinger er blot at vise et eksempel på at man kan lave en særlig administrator-bruger. Indstillinger vil derfor kun have effekt på din enhed og ikke generelt for alle besøgende. Derudover vil værdierne kun gemmes midlertidigt hvorefter de nulstilles.<br>
+								<strong>Hvordan kommer jeg tilbage?:</strong> tryk på dropdown-knappen i øverste højre hjørne og vælg "Tilbage til forsiden" eller "Log ud".
+							</div>
+							<button type="submit" class="btn btn-primary py-2 w-100">Gem</button>
+						</form>
+					</div>
+				</div>
+			</section>
+		</div>
+
+	</main><% /* closing main tag */ %>
+</div><% /* closing contentWrapper */ %>
+<%- include('../shared/includes/all/foot-all') %>

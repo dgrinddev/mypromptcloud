@@ -1,0 +1,88 @@
+<%- include('../shared/includes/all/head-all', {
+	extraSvgIncludes: [
+		'../svg/icons/bootstrap-icons/bi-house',
+		'../svg/icons/bootstrap-icons/bi-gear',
+		'../svg/icons/bootstrap-icons/bi-credit-card',
+		'../svg/icons/bootstrap-icons/bi-box-arrow-left',
+	],
+}) %>
+<%- include('includes/shared/header-visitor') %>
+
+
+<%
+/* Få fat i nuværende url og tag den sidste dele efter sidste forward-slash (/) */
+const currentPathClean = locals.currentPath.match(/[^\/]+$/);
+/* hvis ovenstående findes så lav første bogstav stort */
+const currentPathCleanCapitalized = currentPathClean ? currentPathClean[0].charAt(0).toUpperCase()+currentPathClean[0].slice(1) : '';
+/* indsæt det som en standard-værdi i h1 som bruges når der ikke er sat en custom værdi */
+%>
+<div class="containerLg container-lg">
+	<section id="topSection" class="my-5">
+		<div class="row justify-content-center pt-2 pt-lg-4">
+			<div class="col-lg-8 mb-4">
+				<h1 class="display-4 fw-bold"><%= locals.h1 ?? currentPathCleanCapitalized; %></h1>
+				
+				<p>Hos MyPromptCloud tager jeg dit privatliv meget seriøst. Denne privatlivspolitik forklarer, hvordan jeg indsamler, bruger, beskytter og deler dine personlige oplysninger, når du bruger min tjeneste.</p>
+	
+				<h2 class="mt-4">1. Oplysninger Jeg Indsamler</h2>
+				<p>Jeg indsamler forskellige typer oplysninger for at levere og forbedre min tjeneste:</p>
+				<ul>
+					<li><strong>Personlige oplysninger:</strong> Når du opretter en konto, indsamler jeg din e-mailadresse og adgangskode.</li>
+					<li><strong>Brugsdata:</strong> Jeg indsamler oplysninger om, hvordan du bruger tjenesten, herunder hvilke prompts du gemmer og hvordan du organiserer dem.</li>
+				</ul>
+	
+				<h2 class="mt-4">2. Hvordan Jeg Bruger Dine Oplysninger</h2>
+				<p>Dine oplysninger bruges til følgende formål:</p>
+				<ul>
+					<li>For at levere og vedligeholde tjenesten.</li>
+					<li>For at give dig kundesupport.</li>
+					<li>For at forbedre tjenesten baseret på din feedback og brugsmønstre.</li>
+					<li>For at sende dig meddelelser og opdateringer om tjenesten.</li>
+					<li>For at optimere dine prompts med AI-teknologi ved brug af "Forbedrér"-funktionen.</li>
+				</ul>
+	
+				<h2 class="mt-4">3. Deling af Dine Oplysninger</h2>
+				<p>Jeg deler ikke dine personlige oplysninger med tredjeparter, medmindre det er nødvendigt for at:</p>
+				<ul>
+					<li>Overholde lovmæssige krav.</li>
+					<li>Beskytte mine rettigheder eller ejendom.</li>
+					<li>Forhindre eller undersøge mulige lovovertrædelser i forbindelse med brugen af tjenesten.</li>
+				</ul>
+				<p>Ved brug af "Forbedrér"-funktionen deles indholdet af din prompt med OpenAI (ChatGPT) eller Anthropic (Claude) for at optimere den pågældende prompt ved hjælp af AI-teknologi. Denne deling er nødvendig for at kunne levere den ønskede funktionalitet og forbedring af din prompt.</p>
+	
+				<h2 class="mt-4">4. Sikkerhed for Dine Oplysninger</h2>
+				<p>Jeg bruger rimelige sikkerhedsforanstaltninger for at beskytte dine personlige oplysninger mod uautoriseret adgang, brug eller offentliggørelse. Dog kan ingen metode til transmission over internettet eller elektronisk lagring garanteres at være 100% sikker.</p>
+	
+				<h2 class="mt-4">5. Dine Rettigheder</h2>
+				<p>Du har ret til at få adgang til, rette eller slette dine personlige oplysninger, som jeg opbevarer. Hvis du ønsker at udøve disse rettigheder, bedes du kontakte mig via kontaktformularen på <a href="https://layoutlive.dk/kontakt/">layoutlive.dk/kontakt</a>.</p>
+	
+				<h2 class="mt-4">6. Cookies og Sporingsteknologier</h2>
+				<p>Jeg bruger cookies og lignende sporingsteknologier til at spore aktiviteten på tjenesten og opbevare visse oplysninger. Du kan instruere din browser til at afvise alle cookies eller til at angive, hvornår en cookie sendes. Hvis du ikke accepterer cookies, kan du dog muligvis ikke bruge visse dele af tjenesten.</p>
+	
+				<h2 class="mt-4">7. Ændringer til Denne Privatlivspolitik</h2>
+				<p>Jeg forbeholder mig retten til at opdatere denne privatlivspolitik til enhver tid. Ændringer vil blive offentliggjort på denne side og der vil sendes en mail om ændringerne til de tilmeldte brugere, og din fortsatte brug af tjenesten efter ændringerne anses for at være din accept af den ændrede politik.</p>
+	
+				<h2 class="mt-4">8. Kontaktinformation</h2>
+				<p>Hvis du har spørgsmål eller bekymringer vedrørende denne privatlivspolitik, bedes du kontakte mig via kontaktformularen på <a href="https://layoutlive.dk/kontakt/">layoutlive.dk/kontakt</a>.</p>
+
+				<%
+					const today = new Date();
+					const year = today.getFullYear();
+					const month = today.getMonth(); // 0-based index: January is 0, December is 11
+				
+					// Find the previous month and adjust year if necessary
+					const lastMonthDate = new Date(year, month - 1, 25);
+					const options = { year: 'numeric', month: 'long', day: 'numeric' }; // Include day in the format
+					const formattedDate = lastMonthDate.toLocaleDateString('da-DK', options);
+				%>
+				
+				<p class="mt-4">Sidst opdateret: <%= formattedDate %></p>
+
+			</div>
+		</div>
+	</section>
+</div>
+
+
+<%- include('includes/shared/footer-visitor') %>
+<%- include('../shared/includes/all/foot-all') %>

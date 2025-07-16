@@ -1,0 +1,20 @@
+<%
+/* hvis messageType er 'danger' vil bootstrap alert-elementet få en rød baggrundsfarve og tekstfarve, men hvis messageType er 'succes' bliver det grønne farver */
+const messageType = locals.inputData.messageType ?? 'danger';
+
+const messageTypeCapitalized = messageType.charAt(0).toUpperCase() + messageType.slice(1);
+
+/* hvis messageType er 'danger' vil bootstrap alert-elementet få en advarsels-ikon, men hvis messageType er 'succes' bliver det et flueben-ikon */
+const messageIconMap = {
+	danger: '#bootstrapIcon-exclamation-triangle-fill',
+	success: '#bootstrapIcon-check-circle-fill'
+};
+%>
+<div class="col-12 mb-4">
+	<div id="message" class="alert alert-<%= messageType %> d-flex align-items-center mb-0" role="alert">
+		<svg class="bi flex-shrink-0 me-2" role="img" aria-label="<%= messageTypeCapitalized %>:"><use xlink:href="<%= messageIconMap[messageType] %>"/></svg>
+		<div>
+			<%= inputData.message %>
+		</div>
+	</div>
+</div>

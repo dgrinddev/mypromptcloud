@@ -1,0 +1,29 @@
+.user__prompts_get__all #contentHeaderIcon {
+	-webkit-mask-image: var(--bi-house);
+	mask-image: var(--bi-house);
+}
+.user__prompts_get__unsorted #contentHeaderIcon {
+	-webkit-mask-image: var(--bi-inbox);
+	mask-image: var(--bi-inbox);
+}
+.user__prompts_get__folders #contentHeaderIcon {
+	-webkit-mask-image: var(--bi-folder);
+	mask-image: var(--bi-folder);
+}
+.user__prompts_get__categories #contentHeaderIcon {
+	-webkit-mask-image: var(--bi-collection);
+	mask-image: var(--bi-collection);
+}
+
+.promptItemBody p {
+	font-size: 0.875em;
+}
+
+.promptItemMetadata {
+	font-size: 0.75em;
+}
+
+/* dette sikrer at footeren bevarer samme højde selv hvis promptItem hverken har mappe eller kategori */
+.promptItemFooter {
+	min-height: 24px;
+}

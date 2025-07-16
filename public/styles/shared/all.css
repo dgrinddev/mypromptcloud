@@ -1,0 +1,207 @@
+/* ______ mine custom styles ______ */
+
+/* Definerer CSS-variabler til logoets viewBox dimensioner og højden på navbarens content-område.
+Disse variabler bruges til at beregne den maksimale bredde af logoet i navbaren. */
+:root {
+	/*
+	--bs-body-color: red;
+	*/
+
+	--logoViewBoxWidth: 186; /* Bredden af det fulde logo viewBox */
+	--logoViewBoxHeight: 41; /* Højden af det fulde logo viewBox */
+	--logoIconViewBoxWidth: 39.166599; /* Bredden af logo ikonet viewBox */
+	--logoIconViewBoxHeight: 40.000042; /* Højden af logo ikonet viewBox */
+	--navbarContentHeight: 40px; /* Højden på content-området i navbaren i header */
+	--navbarYPadding: 8px; /* Højden på padding i toppen/bunden af header */
+
+	/* SVG-ikoner */
+	--bi-chevron-down: url("/images/shared/icons/bi-chevron-down.svg");
+	--bi-folder: url("/images/shared/icons/bi-folder.svg");
+	--bi-folder-flipped: url("/images/shared/icons/bi-folder-flipped.svg");
+	--bi-collection: url("/images/shared/icons/bi-collection.svg");
+	--bi-collection-flipped: url("/images/shared/icons/bi-collection-flipped.svg");
+	--bi-house: url("/images/shared/icons/bi-house.svg");
+	--bi-inbox: url("/images/shared/icons/bi-inbox.svg");
+}
+
+/* Tilpasning af .container-lg for at sikre, at bredden er 100% på skærmstørrelserne "Extra small", "Small" og "Medium", men bliver fast på 960px på "Large" og større skærmstørrelser. Når denne bruges så må indholdet i en "col" maks være col-lg-8 i bredde (i containere som blot bruger ".container") */
+@media (min-width: 992px) {
+	.containerLg {
+		max-width: 960px;
+	}
+}
+
+/* Anvend w-100 kun på lg breakpoint */
+@media (min-width: 992px) and (max-width: calc(1200px - 0.02px)) {
+	.w-100-lg {
+		width: 100% !important;
+	}
+}
+/* Anvend w-100 kun på md breakpoint */
+@media (min-width: 768px) and (max-width: calc(992px - 0.02px)) {
+	.w-100-md {
+		width: 100% !important;
+	}
+}
+/* Anvend w-100 kun på sm breakpoint */
+@media (min-width: 576px) and (max-width: calc(768px - 0.02px)) {
+	.w-100-sm {
+		width: 100% !important;
+	}
+}
+/* Anvend w-100 kun på xs breakpoint */
+@media (max-width: calc(576px - 0.02px)) {
+	.w-100-xs {
+		width: 100% !important;
+	}
+}
+
+.maxWidth50 {
+	max-width: 50% !important;
+}
+
+/* størrelsen af udråbstegn-ikon eller flueben-ikon i #message */
+#message > svg {
+	width: 1em;
+	height: 1em;
+}
+
+
+
+/* ___DETTE ER STYLING FOR BUTTONS I FOR EKSEMPEL #headerUser PÅ USER-SIDER:___ */
+
+/* (standard for .btn-light: `--bs-btn-bg: var(--bs-light);`) */
+/* (--bs-secondary-bg: #e9ecef) */
+/* (--bs-light: #f8f9fa) */
+
+/* Bruges når collapseSidebar er åben */
+/* headerUser´s baggrundsfarve når collapseSidebar er åben = #ffffff */
+.btnExtraLight {
+	--bs-btn-bg: var(--bs-light); /* (--bs-light: #f8f9fa) */
+	--bs-btn-hover-bg: var(--bs-secondary-bg); /* (--bs-secondary-bg: #e9ecef) */
+	--bs-btn-color: #565b5e; /* en farve udregnet ved at kigge på toggler btn for navbar */
+	--bs-btn-hover-color: var(--bs-btn-color);
+	--bs-btn-border-color: var(--bs-secondary-bg); /* (--bs-secondary-bg: #e9ecef) */
+	--bs-btn-hover-border-color: var(--bs-border-color); /* (--bs-border-color: #dee2e6) */
+	--bs-btn-active-bg: var(--bs-secondary-bg);
+}
+
+/* Bruges når collapseSidebar er lukket */
+/* headerUser´s baggrundsfarve når collapseSidebar er lukket = #fcfcfd */
+.btnLight {
+	/* disse farver er udregnet med chatGPT: */
+	--bs-btn-bg: #eff3f7;
+	--bs-btn-hover-bg: var(--bs-secondary-bg); /* (--bs-secondary-bg: #e9ecef) */
+	--bs-btn-color: #56595b;
+	--bs-btn-hover-color: #56595b;
+	--bs-btn-border-color: #e6e9ed;
+	--bs-btn-hover-border-color: #d5dce2;
+	--bs-btn-active-bg: var(--bs-secondary-bg);
+}
+
+
+
+/* ___DETTE ER STYLING FOR BUTTONS I FOR EKSEMPEL I #headerNavBtnGroup OG #headerNavBtnGroup_XsAndSm PÅ USER-SIDER:___ */
+
+/* standard værdierne for btn-link: */
+/* (--bs-btn-active-color: #212529) */
+/* (--bs-btn-active-border-color: #212529) */
+/* (--bs-btn-active-bg: rgba(0, 0, 0, 0)) */
+
+/* Bruges når collapseSidebar er åben */
+/* headerUser´s baggrundsfarve når collapseSidebar er åben = #ffffff */
+.btnExtraLightLink {
+	--bs-btn-hover-color: var(--bs-btn-active-color);
+	--bs-btn-color: #565b5e;
+	--bs-btn-border-color: var(--bs-secondary-bg);
+	--bs-btn-hover-border-color: var(--bs-btn-active-border-color);
+	--bs-btn-hover-bg: var(--bs-secondary-bg);
+	--bs-btn-bg: var(--bs-light);
+	--bs-btn-active-bg: var(--bs-secondary-bg);
+}
+
+/* Bruges når collapseSidebar er lukket */
+/* headerUser´s baggrundsfarve når collapseSidebar er lukket = #fcfcfd */
+.btnLightLink {	
+	--bs-btn-hover-color: var(--bs-btn-active-color);
+	--bs-btn-color: #56595b;
+	--bs-btn-border-color: #e6e9ed;
+	--bs-btn-hover-border-color: var(--bs-btn-active-border-color);
+	--bs-btn-hover-bg: var(--bs-secondary-bg);
+	--bs-btn-bg: #eff3f7;	
+	--bs-btn-active-bg: var(--bs-secondary-bg);
+}
+
+/* Truncate multi-line ellipsis */
+.textTruncate {
+	overflow : hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	box-orient: vertical;
+}
+.textTruncateMultiline_2 {
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+}
+/* Anvend textTruncateMultiline_3 på sm breakpoint og op */
+@media (min-width: 576px) {
+	.textTruncateMultiline_sm_3 {
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+	}
+}
+/* Anvend textTruncateMultiline_3 på md breakpoint og op */
+@media (min-width: 768px) {
+	.textTruncateMultiline_md_3 {
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+	}
+}
+/* Anvend textTruncateMultiline_3 på lg breakpoint og op */
+@media (min-width: 992px) {
+	.textTruncateMultiline_lg_3 {
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+	}
+}
+
+
+
+
+
+/* custom tooltip */
+.tooltipAnimation {
+	/*
+	--bs-tooltip-bg: purple;
+	--bs-tooltip-color: red;
+	*/
+}
+.tooltipTrivial {
+	--bs-tooltip-bg: var(--bs-dark-bg-subtle);
+	/*
+	--bs-tooltip-color: blue;
+	*/
+}
+.tooltipImportant {
+	--bs-tooltip-bg: var(--bs-danger);
+	/*
+	--bs-tooltip-color: yellow;
+	*/
+}
+
+/* til at teste animationer i slowmotion */
+/*
+.collapsing {
+	transition: width 2s ease !important;
+}
+
+.show {
+	transition: width 2s ease !important;
+}
+*/
+
+
+.minH100 {
+	min-height: 100% !important;
+}

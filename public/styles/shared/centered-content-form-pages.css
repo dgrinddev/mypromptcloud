@@ -1,0 +1,38 @@
+/* ______ styles til tilmeld.ejs, login.ejs og admin-settings.ejs ______ */
+
+/* LIDT SMALT LAYOUT: til admin-indstilllinger-formularer */
+/* max bredde på containeren på forskellige skærmstørrelser */
+@media (max-width: calc(576px - 0.02px)) {
+	.containerNarrow {
+		max-width: 400px;
+	}
+}
+@media (min-width: 576px) and (max-width: calc(768px - 0.02px)) {
+	.containerNarrow {
+		max-width: 500px;
+	}
+}
+@media (min-width: 768px) {
+	.containerNarrow {
+		max-width: 600px;
+	}
+}
+
+/* MEGET SMALT LAYOUT: til tilmeld- og login-formularer */
+/* max bredde på containeren på forskellige skærmstørrelser */
+@media (max-width: calc(576px - 0.02px)) {
+	.containerExtraNarrow {
+		/* max-width: 345px; */
+		max-width: 413px;
+	}
+}
+@media (min-width: 576px) and (max-width: calc(768px - 0.02px)) {
+	.containerExtraNarrow {
+		max-width: 413px;
+	}
+}
+@media (min-width: 768px) {
+	.containerExtraNarrow {
+		max-width: 480px;
+	}
+}

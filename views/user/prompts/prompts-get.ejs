@@ -1,0 +1,165 @@
+<% // Nogle indstillinger
+const reverseHeaderAndBodyBgColorsSetting = true;
+const collapseSidebarOpenAsDefaultSetting = true;
+
+// Variabler der skal deles med nogle includes
+const cardLayout_containerAndRowClasses = `cardLayout_containerAndRowClasses gx-2 ${collapseSidebarOpenAsDefaultSetting ? 'gx-md-3 gx-lg-4' : 'gx-sm-3 gx-md-4'}`;
+const cardLayout_headerNavbar_paddingYClasses = `py-1 py-sm-2`;
+const cardLayout_headerNavbarInside_gyClasses = 'gy-5';
+const cardLayout_contentHeaderInsidecolInside_pClass = `cardLayout_contentHeaderInsidecolInside_pClass py-1 py-sm-2 px-2 ${collapseSidebarOpenAsDefaultSetting ? 'px-md-3' : 'px-sm-3'}`;
+%>
+
+<%- include('../includes/shared/head-user', {
+	reverseHeaderAndBodyBgColorsSetting: reverseHeaderAndBodyBgColorsSetting,
+	collapseSidebarOpenAsDefaultSetting: collapseSidebarOpenAsDefaultSetting,
+	extraStylesheets: ['/styles/user/prompts/prompts-get.css'],
+	extraScripts: [
+		/*
+		{ // ikke nødvendig hvis alle tooltips har trigger="manual"
+			src: '/scripts/shared/tooltip-activate.js',
+		},
+		*/
+		{
+			src: '/scripts/user/prompts/shared/copy-and-clear-buttons.js',
+			type: 'module',
+		},
+		{
+			src: '/scripts/user/prompts/prompts-get.js',
+			type: 'module',
+		},
+	],
+	extraSvgIncludes: [
+		'../svg/icons/bootstrap-icons/bi-copy',
+		'../svg/icons/bootstrap-icons/bi-pencil',
+		'../svg/icons/bootstrap-icons/bi-folder',
+		'../svg/icons/bootstrap-icons/bi-collection',
+		'../svg/icons/bootstrap-icons/bi-card-text',
+		'../svg/icons/bootstrap-icons/bi-card-image',
+		'../svg/icons/bootstrap-icons/bi-robot',
+	],
+	cardLayout_containerAndRowClasses: cardLayout_containerAndRowClasses,
+	cardLayout_headerNavbar_paddingYClasses: cardLayout_headerNavbar_paddingYClasses,
+	cardLayout_headerNavbarInside_gyClasses: cardLayout_headerNavbarInside_gyClasses,
+	cardLayout_contentHeaderInsidecolInside_pClass: cardLayout_contentHeaderInsidecolInside_pClass,
+})
+%>
+
+<%
+// Variabler der kun skal bruges her i denne fil
+const cardLayout_rowClasses = `cardLayout_rowClasses mb-1 ${collapseSidebarOpenAsDefaultSetting ? 'mb-md-2' : 'mb-sm-2'}`;
+const cardLayout_firstRowClasses = `cardLayout_firstRowClasses mt-1 ${collapseSidebarOpenAsDefaultSetting ? 'mt-md-2' : 'mt-sm-2'}`;
+const cardLayout_cardPaddingClasses = `cardLayout_cardPaddingClasses p-2 ${collapseSidebarOpenAsDefaultSetting ? 'p-md-3' : 'p-sm-3'}`;
+const cardLayout_cardBgClasses = `cardLayout_cardBgClasses ${collapseSidebarOpenAsDefaultSetting || reverseHeaderAndBodyBgColorsSetting ? 'bg-body' : 'bg-light-subtle'}`;
+const cardLayout_cardBorderClasses = 'border border-light-subtle rounded-2';
+const cardLayout_cardShadowClasses = 'shadow-sm';
+%>
+
+<ul id="promptItems" class="list-unstyled mb-0">
+<%
+if (promptItems !== undefined && promptItems.length > 0) {
+%>
+	<%
+	let promptItemsCounter = 0;
+	// let promptItemsLastItemIndex = promptItems.length - 1;
+	promptItems.forEach((promptItem) => { %>
+		<li id="promptItem-<%= promptItem.id %>" class="row <%= `${cardLayout_rowClasses} ${promptItemsCounter === 0 ? cardLayout_firstRowClasses : ''} ${cardLayout_containerAndRowClasses}` %>">
+			<div class="col">
+				<article class="promptItemArticle <%= `${cardLayout_cardBorderClasses} ${cardLayout_cardPaddingClasses} ${cardLayout_cardBgClasses} ${cardLayout_cardShadowClasses}` %>">
+					<header class="promptItemHeader d-flex justify-content-between align-items-center mb-1">
+						<div class="promptItemHeader_heading icon-link text-body text-truncate">
+							<%
+							const prompttypeIcons = {
+								text:	'card-text',
+								image:	'card-image',
+								other: 'robot',
+							};
+							%>
+							<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-<%= prompttypeIcons[promptItem.prompttype] %>"/></svg>
+							<h3 class="promptItemHeader_heading_text h6 fw-medium mb-0 text-truncate"><%= promptItem.title.trim(); %></h3>
+						</div>
+						<div class="promptItemBtnGroup btn-group ms-2 <%= collapseSidebarOpenAsDefaultSetting ? 'ms-md-3' : 'ms-sm-3'; %>">
+							<button type="button" class="promptItemCopyBtn btn btn-secondary btn-sm icon-link px-3 <%= collapseSidebarOpenAsDefaultSetting ? 'px-md-2' : 'px-sm-2'; %>" data-bs-toggle="tooltip" data-bs-custom-class="tooltipAnimation" data-bs-title="Kopieret!" data-bs-trigger="manual">
+								<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-copy"/></svg>
+								<span class="promptItemCopyBtnText ps-2 d-none <%= collapseSidebarOpenAsDefaultSetting ? 'd-md-block' : 'd-sm-block'; %>">Kopiér</span>
+							</button>
+							<button type="button" class="promptItemDropdownBtn btn btn-secondary btn-sm dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+								<span class="visually-hidden">Toggle Dropdown</span>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end">
+								<li>
+									<a class="promptItemEditBtn dropdown-item form-control-sm icon-link" href="/user/prompt/add-or-edit/<%= promptItem.id %>">
+										<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-pencil"/></svg>Rediger
+									</a>
+								</li>
+								<li><hr class="dropdown-divider"></li>
+								<li>
+									<button class="promptItemDeleteBtn dropdown-item form-control-sm icon-link text-danger" type="button" data-itemid="<%= promptItem.id %>" data-csrf="<%= locals.csrfToken %>">
+										<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-trash"/></svg>Slet
+									</button>
+								</li>
+							</ul>
+						</div>
+					</header>
+					<div class="promptItemBody mb-1">
+						<p class="promptItemBodyText text-body-secondary mb-0 textTruncate textTruncateMultiline_2 <%= collapseSidebarOpenAsDefaultSetting ? 'textTruncateMultiline_lg_3' : 'textTruncateMultiline_md_3'; %>"><%= promptItem.content.trim() %></p>
+					</div>
+					<%
+					// nedenstående opening-tag er den version jeg brugte da datoen blev tvunget ned på næste linje på xs-breakpoint (eller både xs og sm hvis collapse sidebar var åben)
+					if (0) { %>
+					<footer class="promptItemFooter d-flex flex-wrap">
+					<% } %>
+					<footer class="promptItemFooter d-flex">
+						<% if (promptItem.organization_folders || promptItem.organization_categories) { %>
+							<%
+							// nedenstående opening-tag er den version jeg brugte da datoen blev tvunget ned på næste linje på xs-breakpoint (eller både xs og sm hvis collapse sidebar var åben)
+							if (0) { %>
+							<div class="promptItemMetadata_OrganizationSectionLabelsWrapper col-12 pe-1 <%= collapseSidebarOpenAsDefaultSetting ? 'col-md-9 pe-md-0' : 'col-sm-9 pe-sm-0'; %> text-nowrap">
+							<% } %>
+							<div class="promptItemMetadata_OrganizationSectionLabelsWrapper text-nowrap<%= `${promptItem.organization_folders ? ' promptItemHave_folders' : ''}${promptItem.organization_categories ? ' promptItemHave_categories' : ''} col-8 ${collapseSidebarOpenAsDefaultSetting ? 'col-sm-8' : 'col-sm-9'}` %>">
+								<% if (promptItem.organization_folders) { %>
+									<div class="promptItemMetadata_OrganizationSectionLabel_folders promptItemMetadata_OrganizationSectionLabel promptItemMetadata icon-link text-body-tertiary maxWidth50 <%= `${promptItem.organization_categories ? (' pe-1 ' + (collapseSidebarOpenAsDefaultSetting ? 'pe-md-2' : 'pe-sm-2')) : ''}` %>" data-organizationsectionitemid="<%= promptItem.organization_folders.id %>">
+										<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-folder"/></svg>
+										<span class="promptItemMetadata_OrganizationSectionLabel_folders_text text-truncate"><%= promptItem.organization_folders.name %></span>
+									</div>
+								<% } %>
+								<% if (promptItem.organization_categories) { %>
+									<div class="promptItemMetadata_OrganizationSectionLabel_categories promptItemMetadata_OrganizationSectionLabel promptItemMetadata icon-link text-body-tertiary maxWidth50 <%= `${promptItem.organization_folders ? (' ps-1 ' + (collapseSidebarOpenAsDefaultSetting ? 'ps-md-2' : 'ps-sm-2')) : ''}` %>" data-organizationsectionitemid="<%= promptItem.organization_categories.id %>">
+										<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-collection"/></svg>
+										<span class="promptItemMetadata_OrganizationSectionLabel_categories_text text-truncate"><%= promptItem.organization_categories.name %></span>
+									</div>
+								<% } %>
+							</div>
+						<% } %>
+						<%
+						// nedenstående opening-tag er den version jeg brugte da datoen blev tvunget ned på næste linje på xs-breakpoint (eller både xs og sm hvis collapse sidebar var åben)
+						if (0) { %>
+						<div class="promptItemMetadata_date promptItemMetadata col-12 ps-0 mt-0 justify-content-start <%= collapseSidebarOpenAsDefaultSetting ? 'col-md-auto ps-md-3 mt-md-0 justify-content-md-end' : 'col-sm-auto ps-sm-3 mt-sm-0 justify-content-sm-end'; %> text-body-tertiary d-flex align-items-center flex-fill">
+						<% } %>
+						<div class="promptItemMetadata_date promptItemMetadata col-auto justify-content-end text-body-tertiary d-flex align-items-center flex-fill ps-2 <%= collapseSidebarOpenAsDefaultSetting ? 'ps-lg-3' : 'ps-md-3'; %>">
+							<%
+							const promptItemMetadata_dateExtraLong = new Date(promptItem.created_at).toLocaleString('da-DK', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+							%>
+							<time class="promptItemMetadata_dateLong d-none <%= collapseSidebarOpenAsDefaultSetting ? 'd-md-block' : 'd-sm-block'; %>" title="<%= promptItemMetadata_dateExtraLong %>"><%= new Intl.DateTimeFormat('da-DK', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(promptItem.created_at)) %></time>
+							<time class="promptItemMetadata_dateShort d-block <%= collapseSidebarOpenAsDefaultSetting ? 'd-md-none' : 'd-sm-none'; %>" title="<%= promptItemMetadata_dateExtraLong %>"><%= new Intl.DateTimeFormat('da-DK', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(promptItem.created_at)) %></time>
+						</div>
+					</footer>
+				</article>
+			</div>
+		</li>
+	<% promptItemsCounter++; }); %>
+<%
+} else {
+%>
+	<li id="noPromptItemsFound_row" class="row <%= `${cardLayout_rowClasses} ${cardLayout_firstRowClasses} ${cardLayout_containerAndRowClasses}` %>">
+		<div class="col">
+			<div class="<%= `${cardLayout_cardPaddingClasses}` %>">
+				<h3 class="h6 text-body-tertiary fw-medium mb-0">
+					Ingen prompts her. Tryk på "Tilføj Prompt"-knappen for at tilføje en prompt<%= locals.organizationSectionType_labelSingular_da ? ` til denne ${locals.organizationSectionType_labelSingular_da}` : '' %>.
+				</h3>
+			</div>
+		</div>
+	</li>
+<% } %>
+</ul>
+
+<%- include('../includes/shared/foot-user') %>

@@ -1,0 +1,29 @@
+/* så ".input_organization-descriptionContainer"-elementet optager samme plads uanset om tomt eller ej */
+.input_organization-descriptionContainer {
+	min-height: 18px;
+	font-size: 12px;
+}
+
+/* så ".contentCopyBtn" og ".contentClearBtn"-elementerne altid har samme højde uanset om de indeholder tekst eller ej */
+.contentCopyBtn,
+.contentClearBtn {
+	min-height: 23px;
+}
+
+.borderStyle_double {
+	border-style: double !important;
+}
+
+/* Anvend d-none på xs til md breakpoint */
+@media (max-width: calc(992px - 0.02px)) {
+	.doesntHaveContent.doesntHaveContent_d-lg-block {
+		display: none !important;
+	}
+}
+
+/* Anvend d-none kun på xs breakpoint */
+@media (max-width: calc(576px - 0.02px)) {
+	.doesntHaveContent.doesntHaveContent_d-sm-block {
+		display: none !important;
+	}
+}

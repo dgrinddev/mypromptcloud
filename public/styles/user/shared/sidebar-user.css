@@ -1,0 +1,248 @@
+/* ______ styles til sidebar på user-sider ______ */
+:root {
+	--sidebarWidth: 255px;
+	--sidebarBorderWidth: 1px;
+}
+
+#headerAndContentWrapper {
+	width: calc(100vw - var(--sidebarWidth) - var(--sidebarBorderWidth));
+}
+
+#COLLAPSE_SIDEBAR-headerBodyFooterWrapper {
+	width: var(--sidebarWidth);
+}
+#offcanvasSidebar {
+	--bs-offcanvas-width: var(--sidebarWidth);
+}
+
+.SIDEBAR-offcanvasSidebarCloseBtn {
+	margin-left: 12px;
+}
+
+/* Den skal altid være 57px i højden for at den matcher højden på navbar i header */
+.SIDEBAR-brandAndCloseBtn_container {
+	height: calc(1px + var(--navbarContentHeight) + var(--navbarYPadding) * 2);
+}
+
+.SIDEBAR-header,
+.SIDEBAR-body,
+.SIDEBAR-sidebarFooter {
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+.SIDEBAR-sidebarFooter small {
+	font-size: 10px;
+	line-height: 5px !important;
+}
+
+.organizationSectionItems li {
+	margin-top: 2px;
+}
+
+.organizationSectionItemBtn,
+.organizationSectionItemDropdownBtn {
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+.organizationSectionItemBtn {
+	--bs-btn-active-color: var(--bs-btn-color);
+}
+
+.organizationSectionItemDropdownBtn {
+	--bs-btn-bg: none;
+	--bs-btn-hover-bg: none;
+}
+
+.organizationSectionItemDropdownBtn svg {
+	width: 1em;
+	height: 1em;
+	margin-right: -4.01px;
+}
+
+.organizationSectionAddItemDropdownBtn svg {
+	margin-right: -11px;
+}
+
+/* organizationSectionItemBtn (når musen holdes over organizationSectionItemDropdownBtn) */
+.organizationSectionItems li:has(.dropdown .organizationSectionItemDropdownBtn:hover) .organizationSectionItemBtn,
+/* organizationSectionItemBtn (når dropdown menu er åben) */
+.organizationSectionItems li:has(.dropdown .dropdown-menu.show) .organizationSectionItemBtn
+{
+	--bs-btn-bg: var(--bs-secondary-bg);
+}
+
+/* organizationSectionItemBtn (når dropdown menu er åben) */
+.organizationSectionItems li:has(.dropdown .dropdown-menu.show) .organizationSectionItemBtn
+{
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+}
+
+/* organizationSectionItemDropdownBtn (når dropdown menu er åben) */
+.organizationSectionItems .dropdown:has(.dropdown-menu.show) .organizationSectionItemDropdownBtn {
+	--bs-btn-active-bg: var(--bs-secondary-bg);
+	--bs-btn-active-color: var(--bs-btn-color);
+	border-top-left-radius: 0px;
+	border-bottom-left-radius: 0px;
+}
+
+.organizationSectionItems li .dropdown {
+	display: none;
+}
+
+.organizationSectionItems li:has(.dropdown .dropdown-menu.show) .dropdown,
+.organizationSectionItems li:has(.organizationSectionItemBtn:hover) .dropdown,
+.organizationSectionItems li:has(.organizationSectionItemDropdownBtn:hover) .dropdown {
+	display: block;
+}
+
+/* Din CSS her vil gælde for enheder der ikke har fine pointer og hover */
+@media not all and (pointer: fine) and (hover: hover) {
+	.organizationSectionItems li:has(.organizationSectionItemBtn.active) .dropdown {
+		display: block;
+	}
+}
+
+.organizationSectionHeader {
+	max-width: 175px;
+}
+
+
+/*
+
+.organizationSectionHeader .dropdown-menu,
+.organizationSectionItems li .dropdown-menu {
+	max-width: 100vw;
+}
+*/
+
+.organizationSectionHeader .dropdown-menu,
+.organizationSectionItems li .dropdown-menu {
+	width: 239px; /* sæt den til 239px hvis sidebaren er 255px bred */
+}
+
+
+
+
+.organizationSectionItems.noItems .organizationSectionItemBtn.disabled {
+	--bs-btn-disabled-color: #565b5e;
+}
+
+
+/* Simpel animation med et chevron-ikon der roterer ved toggle af knap.
+transition er sat til .35s fordi jeg tror det er det samme som collapse har når den åbner/lukker */
+
+/* Denne bruger ::before */
+/*
+.organizationSectionTogglerBtn::before {
+	width: 1.25em;
+	line-height: 0;
+	content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-right' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708'/%3E%3C/svg%3E");
+	transition: transform .35s ease;
+	transform-origin: .5em 50%;
+}
+.organizationSectionTogglerBtn[aria-expanded="true"]::before {
+	transform: rotate(90deg);
+}
+*/
+
+/* Denne indsætter baggrundsbillede i et span */
+/*
+.organizationSectionTogglerBtn .organizationSectionTogglerBtnIcon {
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-right' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708'/%3E%3C/svg%3E");
+	width: 1em;
+	height: 1em;
+	transition: transform .35s ease;
+}
+.organizationSectionTogglerBtn[aria-expanded="true"] .organizationSectionTogglerBtnIcon {
+	transform: rotate(90deg);
+}
+*/
+
+/* Denne indsætter baggrundsbillede i et span. og det er muligt at ændre farven på den */
+/* background-color er den farve som ikonet vil få. jeg har sagt den til den farve teksten har i knappen ("btnExtraLight"-class) */
+/*
+.organizationSectionTogglerBtn .organizationSectionTogglerBtnIcon {
+	-webkit-mask-image: var(--bi-chevron-down);
+	-webkit-mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	mask-image: var(--bi-chevron-down);
+	mask-size: contain;
+	mask-repeat: no-repeat;
+	mask-position: center;
+
+	background-color: var(--bs-btn-color);
+	width: 1em;
+	height: 1em;
+	transition: transform .35s ease;
+}
+.organizationSectionTogglerBtn[aria-expanded="true"] .organizationSectionTogglerBtnIcon {
+	transform: rotate(-90deg);
+}
+*/
+
+.organizationSingleBtn {
+	gap: 0px;
+	font-size: 15px;
+}
+
+.organizationSingleBtn svg {
+	width: 16px !important;
+	height: 16px !important;
+}
+
+.organizationSectionTogglerBtnIcon {
+	-webkit-mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	mask-size: contain;
+	mask-repeat: no-repeat;
+	mask-position: center;
+
+	background-color: var(--bs-btn-color);
+	width: 1em;
+	height: 1em;
+
+	transition: transform .35s ease;
+}
+
+/* Folder-ikon (standardvisning for folders) */
+.SIDEBAR-organizationSection_folders .organizationSectionTogglerBtnIcon {
+	-webkit-mask-image: var(--bi-folder);
+	mask-image: var(--bi-folder);
+}
+
+/* flipped Folder-ikon (standardvisning for folders når collapse er åben) */
+.SIDEBAR-organizationSection_folders .organizationSectionTogglerBtn[aria-expanded="true"]:not(:hover) .organizationSectionTogglerBtnIcon {
+	-webkit-mask-image: var(--bi-folder-flipped);
+	mask-image: var(--bi-folder-flipped);
+}
+
+/* collection-ikon (standardvisning for categories) */
+.SIDEBAR-organizationSection_categories .organizationSectionTogglerBtnIcon {
+	-webkit-mask-image: var(--bi-collection);
+	mask-image: var(--bi-collection);
+}
+
+/* flipped collection-ikon (standardvisning for categories når collapse er åben) */
+.SIDEBAR-organizationSection_categories .organizationSectionTogglerBtn[aria-expanded="true"]:not(:hover) .organizationSectionTogglerBtnIcon {
+	-webkit-mask-image: var(--bi-collection-flipped);
+	mask-image: var(--bi-collection-flipped);
+}
+
+/* Chevron-ikon (ved hover-tilstand og collapsing-tilstand) */
+/* BEMÆRK: jeg har givet den mere specifik selector (".SIDEBAR-organizationSections" i starten) for at kunne fjerne "!important" men hvis der opstår problemer så genindsæt "!important" */
+.SIDEBAR-organizationSections .organizationSectionTogglerBtn:hover .organizationSectionTogglerBtnIcon,
+.SIDEBAR-organizationSections .organizationSection:has(.organizationSectionCollapse.collapsing) .organizationSectionTogglerBtn .organizationSectionTogglerBtnIcon {
+	-webkit-mask-image: var(--bi-chevron-down);
+	mask-image: var(--bi-chevron-down);
+}
+
+/* Rotation af chevron-ikon når collapse er expanded */
+.organizationSectionTogglerBtn[aria-expanded="true"] .organizationSectionTogglerBtnIcon {
+	transform: rotate(-180deg);
+}
+
+

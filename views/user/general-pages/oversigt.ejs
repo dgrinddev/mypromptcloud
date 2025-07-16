@@ -1,0 +1,27 @@
+<% // Settings
+	const reverseHeaderAndBodyBgColorsSetting = true;
+	const collapseSidebarOpenAsDefaultSetting = true;
+%>
+<% /* indlæser: include('.../head-all'), #offcanvasSidebar, #collapseSidebar, opening #headerAndContentWrapper, include('header-user'), opening #contentWrapper, #contentHeader, opening main tag (#contentBody), opening #contentBodyInside */ %>
+<%- include('../includes/shared/head-user', {
+	reverseHeaderAndBodyBgColorsSetting: reverseHeaderAndBodyBgColorsSetting,
+	collapseSidebarOpenAsDefaultSetting: collapseSidebarOpenAsDefaultSetting,
+	showContentHeaderSetting: false,
+	contentBodyAddClasses: 'd-flex minH100',
+	contentBodyInsideClasses: 'w-100',
+	contentBodyInsideAddClasses: 'd-flex',
+	extraStylesheets: [
+		'/styles/user/general-pages/oversigt.css',
+		'/styles/user/shared/coming-soon.css',
+	],
+	extraScripts: [
+		{src: '/scripts/user/general-pages/oversigt.js'},
+	],
+	extraSvgIncludes: ['../svg/icons/bootstrap-icons/bi-arrow-up-left'],
+})
+%>
+
+<% /* herunder er indholdet mellem #contentBodyInside opening and closing tag */ %>
+<%- include('../includes/shared/coming-soon') %>
+
+<%- include('../includes/shared/foot-user') %><% /* indlæser: closing #contentBodyInside, closing main tag (#contentBody), closing #contentWrapper, closing #headerAndContentWrapper og include('.../foot-all') */ %>

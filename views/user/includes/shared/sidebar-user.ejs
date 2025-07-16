@@ -1,0 +1,158 @@
+<%
+const dropdownAttribute = 0 ? `data-bs-popper-config='{"strategy":"fixed"}'` : ``;
+const dropdownAlignment = 0 ? 'dropdown-menu-start' : 'dropdown-menu-end';
+%>
+
+<div id="<%= locals.offcanvasOrCollapse %>_SIDEBAR-headerBodyFooterWrapper" class="SIDEBAR-headerBodyFooterWrapper d-flex flex-column vh-100">
+
+	<div class="SIDEBAR-header">
+		<div class="SIDEBAR-brandAndCloseBtn_container py-2 d-flex align-items-center <%= 0 ? '' : 'border-bottom ' %><%= locals.borderClasses_headerUser_contentHeader_sidebar %>">
+			<% if (0) { %>
+				<%- include('../../../shared/includes/nav-logo-img', {logoFileType: 'svg', containerTag: 'div', containerId: 'sidebarBrandSvgContainer', containerClass: `${locals.alwaysShowLogoInSidebar ? 'd-flex ' : 'd-flex d-md-none '}justify-content-center flex-fill navLogoImg-full link-primary`}) %>
+			<% } else { %>
+				<%- include('../../../shared/includes/nav-logo-img', {filenameOrId: 'ny-logo', viewBoxValue: '0 0 113.75906 41.566093', logoFileType: 'svg', containerTag: 'div', containerId: 'sidebarBrandSvgContainer', containerClass: `${locals.alwaysShowLogoInSidebar ? 'd-flex ' : 'd-flex d-md-none '}justify-content-center flex-fill navLogoImg-full link-primary`}) %>
+			<% } %>
+			<div class="<%= locals.alwaysShowLogoInSidebar ? 'd-none' : 'd-none d-md-flex'; %> justify-content-center flex-fill">
+				<h4 class="fw-bold mb-0">Prompts</h2>
+			</div>
+			<div>
+				<% if (locals.offcanvasOrCollapse === 'OFFCANVAS') { %>
+					<button type="button" class="SIDEBAR-offcanvasSidebarCloseBtn p-2 btn-close btn btn-light btnExtraLight" data-bs-dismiss="offcanvas" aria-label="Close sidebar"></button>
+				<% } %>
+			</div>
+		</div>
+	</div>
+
+	<div class="SIDEBAR-body flex-fill pt-3 pb-2">
+		<nav class="SIDEBAR-nav">
+			<ul class="SIDEBAR-organizationSingles list-unstyled mb-0">
+				<%
+				const organizationSinglesConfig = [
+					{
+						type: 'all',
+						url: '/user/prompts-get/all',
+						icon: 'bootstrapIcon-house',
+						label_da: 'Alle prompts',
+					},
+					{
+						type: 'unsorted',
+						url: '/user/prompts-get/unsorted',
+						icon: 'bootstrapIcon-inbox',
+						label_da: 'Usorterede',
+					},
+				];
+				let organizationSinglesCounter = 0;
+				organizationSinglesConfig.forEach((single) => { %>
+					<li class="SIDEBAR-organizationSingle_<%= single.type %> organizationSingle<%= organizationSinglesCounter > 0 ? ' mt-2' : ''; %>">
+						<a class="organizationSingleBtn btn btn-outline-light btnExtraLight border-0 py-1 px-2 fw-medium icon-link<%= locals.currentPath === single.url ? ' active' : ''; %>"<%- locals.currentPath === single.url ? ' aria-current="page"' : ''; %> href="<%= single.url %>">
+							<svg class="bi" aria-hidden="true"><use xlink:href="#<%= single.icon %>"/></svg>
+							<span class="ps-2"><%= single.label_da %></span>
+						</a>
+					</li>
+				<% organizationSinglesCounter++; }); %>
+			</ul>
+			<ul class="SIDEBAR-organizationSections list-unstyled mt-2">
+				<%
+				const organizationSectionsConfig = [
+					{
+						type: 'folders',
+						openAsDefault: true,
+						itemsUrlPrefix: '/user/prompts-get/folders/',
+						labelSingular_da: 'mappe',
+						labelSingularCapitalized_da: 'Mappe',
+						labelPlural_da: 'mapper',
+						labelPluralCapitalized_da: 'Mapper',
+						organizationSectionItems: locals.organizationSectionsItems.folders,
+					},
+					{
+						type: 'categories',
+						openAsDefault: true,
+						itemsUrlPrefix: '/user/prompts-get/categories/',
+						labelSingular_da: 'kategori',
+						labelSingularCapitalized_da: 'Kategori',
+						labelPlural_da: 'kategorier',
+						labelPluralCapitalized_da: 'Kategorier',
+						organizationSectionItems: locals.organizationSectionsItems.categories,
+					},
+				];
+				let organizationSectionsCounter = 0;
+				organizationSectionsConfig.forEach((section) => { %>
+					<li class="SIDEBAR-organizationSection_<%= section.type %> organizationSection<%= organizationSectionsCounter > 0 ? ' mt-2' : ''; %>">
+						<div class="organizationSectionHeader d-flex justify-content-between">
+							<button class="organizationSectionTogglerBtn btn btn-outline-light btnExtraLight border-0 py-1 px-2 fw-semibold flex-fill d-inline-flex align-items-center<%= section.openAsDefault ? '' : ' collapsed'; %>" type="button" data-bs-toggle="collapse" data-bs-target=".SIDEBAR-organizationSectionCollapse_<%= section.type %>" aria-expanded="<%= section.openAsDefault ? 'true' : 'false'; %>" aria-controls="OFFCANVAS_SIDEBAR-organizationSectionCollapse_<%= section.type %> COLLAPSE_SIDEBAR-organizationSectionCollapse_<%= section.type %>">
+								<span class="organizationSectionTogglerBtnIcon"></span>
+								<span class="organizationSectionTogglerBtnText ps-2"><%= section.labelPluralCapitalized_da %></span>
+							</button>
+							<div class="dropdown">
+								<button class="organizationSectionAddItemDropdownBtn btn btn-outline-light btnExtraLight border-0 py-1 px-2 fw-semibold icon-link" type="button" data-bs-toggle="dropdown" <%- dropdownAttribute %> aria-expanded="false">
+									<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-plus-circle"/></svg>
+									<span class="invisible">.</span>
+								</button>
+								<div class="dropdown-menu <%= dropdownAlignment %>">
+									<form class="px-2" action="/user/organization-section/add-or-edit-item" method="POST">
+										<input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+										<input type="hidden" name="organization_section_type" value="<%= section.type %>">
+										<div class="input-group">
+											<input type="text" name="name" class="organizationSectionAddItemNameInput form-control form-control-sm" placeholder="Navn på <%= section.labelSingular_da %>" aria-label="Navn på <%= section.labelSingular_da %>">
+											<button type="submit" class="organizationSectionAddItemSubmitBtn btn btn-success icon-link px-2">
+												<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-check-lg"/></svg>
+											</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div id="<%= locals.offcanvasOrCollapse %>_SIDEBAR-organizationSectionCollapse_<%= section.type %>" class="SIDEBAR-organizationSectionCollapse_<%= section.type %> organizationSectionCollapse ps-4 collapse<%= section.openAsDefault ? ' show' : ''; %>">
+							<ul class="organizationSectionItems list-unstyled<%= (section.organizationSectionItems === undefined || section.organizationSectionItems.length == 0) ? ' noItems' : ''; %>">
+								<% if (section.organizationSectionItems === undefined || section.organizationSectionItems.length == 0) { %>
+									<li>
+										<a class="organizationSectionItemBtn btn btn-outline-light btnExtraLight btn-sm border-0 disabled" aria-disabled="true">Ingen <%= section.labelPlural_da %> tilføjet</a>
+									</li>
+								<% } else { %>
+									<% section.organizationSectionItems.forEach((item) => { %>
+										<li id="<%= locals.offcanvasOrCollapse %>_SIDEBAR-organization_section_item-<%= item.id %>" class="SIDEBAR-organization_section_item-<%= item.id %> d-flex">
+											<a class="organizationSectionItemBtn btn btn-outline-light btnExtraLight btn-sm border-0 text-truncate<%= locals.currentPath === section.itemsUrlPrefix + item.id ? ' active' : ''; %>"<%- locals.currentPath === section.itemsUrlPrefix + item.id ? ' aria-current="page"' : ''; %> href="<%= section.itemsUrlPrefix + item.id %>"><%= item.name %></a>
+											<div class="dropdown">
+												<button class="organizationSectionItemDropdownBtn btn btn-outline-light btnExtraLight btn-sm border-0 d-flex align-items-center" type="button" data-bs-toggle="dropdown" <%- dropdownAttribute %> aria-expanded="false">
+													<svg class="flex-shrink-0"><use xlink:href="#bootstrapIcon-three-dots"></use></svg>
+													<span class="invisible">.</span>
+												</button>
+												<div class="dropdown-menu <%= dropdownAlignment %>">
+													<form class="px-2" action="/user/organization-section/add-or-edit-item" method="POST">
+														<input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+														<input type="hidden" name="organization_section_type" value="<%= section.type %>">
+														<input type="hidden" name="item_id" value="<%= item.id %>">
+														<div class="input-group">
+															<input type="text" name="name" class="organizationSectionEditItemNameInput form-control form-control-sm" placeholder="Navn på <%= section.labelSingular_da %>" aria-label="Navn på <%= section.labelSingular_da %>" value="<%= item.name %>">
+															<button type="submit" class="organizationSectionEditItemSubmitBtn btn btn-success icon-link px-2">
+																<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-check-lg"/></svg>
+															</button>
+														</div>
+													</form>
+													<div class="dropdown-divider"></div>
+													<button class="organizationSectionDeleteItemSubmitBtn dropdown-item icon-link text-danger form-control-sm" type="button" data-itemid="<%= item.id %>" data-organizationsectiontype="<%= section.type %>" data-csrf="<%= locals.csrfToken %>">
+														<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-trash"/></svg>Slet
+													</button>
+												</div>
+											</div>
+										</li>
+									<% }); %>
+								<% } %>
+							</ul>
+						</div>
+					</li>
+				<% organizationSectionsCounter++; }); %>
+			</ul>
+		</nav>
+	</div>
+
+	<div id="<%= locals.offcanvasOrCollapse %>_SIDEBAR-sidebarFooter" class="SIDEBAR-sidebarFooter">
+		<div class="SIDEBAR-copyright_container pb-2 pt-1 lh-1 border-top <%= locals.borderClasses_headerUser_contentHeader_sidebar %>">
+			<small class="text-secondary">
+				&copy; <%= new Date().getFullYear() %> MyPromptCloud<br>
+				Udviklet af Daniel Grinderslev
+			</small>
+		</div>
+	</div>
+
+</div>

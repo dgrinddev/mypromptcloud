@@ -1,0 +1,14 @@
+/* ______ styles til forside.ejs ______ */
+
+/* størrelsen af ikoner og padding i deres container (til øverste features) */
+#featuresSectionTopRow .featureImgContainer {
+	padding: 12px;
+}
+#featuresSectionTopRow .featureImgContainer img {
+	width: 25px;
+}
+
+/* størrelsen af ikoner til nederste features */
+#featuresSectionBottomRow .featureImgContainer img {
+	width: 22px;
+}

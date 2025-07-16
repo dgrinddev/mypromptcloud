@@ -1,0 +1,26 @@
+/* ______ styles til  ______ */
+
+
+/* Denne indsætter baggrundsbillede i et span. og det er muligt at ændre farven på den */
+/* background-color er den farve som ikonet vil få. jeg har sagt den til den farve teksten har i knappen ("btnExtraLight"-class) */
+.iconBg {
+	-webkit-mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-position: center;
+	mask-size: contain;
+	mask-repeat: no-repeat;
+	mask-position: center;
+}
+
+#contentHeaderIcon {
+	background-color: rgb(86, 91, 94);
+	width: 1.25em;
+	height: 1.25em;
+	min-width: 20px;
+	min-height: 20px;
+}
+
+#contentHeader h1 {
+	color: rgb(86, 91, 94);
+}
+

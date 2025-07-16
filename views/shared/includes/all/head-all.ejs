@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en"<%- locals.htmlAttributes ?? ''; %>>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" href="/images/favicon.svg" type="image/svg">
+
+		<%
+		/* Få fat i nuværende url og tag den sidste dele efter sidste forward-slash (/) */
+		const currentPathClean = locals.currentPath.match(/[^\/]+$/);
+		/* hvis ovenstående findes så lav første bogstav stort */
+		const currentPathCleanCapitalized = currentPathClean ? currentPathClean[0].charAt(0).toUpperCase()+currentPathClean[0].slice(1) : '';
+		/* indsæt det som en standard-værdi i title som bruges når der ikke er sat en custom værdi */
+		%>
+		<title><%= locals.title ?? 'MyPromptCloud - ' + currentPathCleanCapitalized; %></title>
+		
+		<% /* bootstrap.css */ %>
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+		
+		<% /* ______ custom styles ______ */ %>
+		<%
+		// tilføj all.css overalt på hjemmesiden
+		let defaultStylesheets = [
+			'/styles/shared/all.css',
+		];
+		// tilføj header-visitor_and_user.css på alle visitor-sider og user-sider
+		if (locals.isVisitorPage || locals.isUserPage) {
+			defaultStylesheets.push(
+				'/styles/shared/header-visitor_and_user.css',
+				'/styles/shared/headerNavbarToggler-animation.css',
+			);
+		}
+		// tilføj user-dropdown.css på alle visitor-sider, user-sider og admin-sider (f.eks. '/admin-settings') (derfor ikke på auth sider som '/tilmeld' og '/login')
+		if (locals.isVisitorPage || locals.isUserPage || locals.isAdminPage) {
+			defaultStylesheets.push(
+				'/styles/shared/user-dropdown.css',
+			);
+		}
+		// tilføj 'header-visitor.css' og 'footer-visitor.css' på alle visitor-sider
+		if (locals.isVisitorPage) {
+			defaultStylesheets.push(
+				'/styles/visitor/shared/header-visitor.css',
+				'/styles/visitor/shared/footer-visitor.css',
+			);
+		}
+		// tilføj 'user.css', 'header-user.css', 'sidebar-user.css' på alle user-sider
+		if (locals.isUserPage) {
+			defaultStylesheets.push(
+				'/styles/user/shared/user.css',
+				'/styles/user/shared/header-user.css',
+				'/styles/user/shared/sidebar-user.css',
+				'/styles/user/shared/content-wrapper-user.css',
+			);
+			
+			/* collapse-sidebar-wide.css bruges kun fordi der er en fejl. se collapse-sidebar-wide.css for mere info */
+			if (locals.showHeaderNavbarCollapse) {
+				defaultStylesheets.push(
+					'/styles/user/shared/collapse-sidebar-wide.css',
+				);
+			}
+		}
+		// tilføj centered-content-form-pages.css på auth-sider og admin-sider (centered content form pages) (så f.eks. '/auth/tilmeld', '/auth/login' og '/admin/admin-settings')
+		if (locals.isAuthPage || locals.isAdminPage) {
+			defaultStylesheets.push(
+				'/styles/shared/centered-content-form-pages.css',
+			);
+		}
+		// tilføj admin.css på admin-sider (så f.eks. '/admin/admin-settings')
+		if (locals.isAdminPage) {
+			defaultStylesheets.push(
+				'/styles/admin/shared/admin.css',
+			);
+		}
+		// tilføj auth.css på auth-sider (så f.eks. '/auth/login')
+		if (locals.isAuthPage) {
+			defaultStylesheets.push(
+				'/styles/auth/shared/auth.css',
+			);
+		}
+		/*
+		tilføj de stylesheets der er inkluderet i:
+		- `res.render('...', {extraStylesheets: [...]})` eller i f.eks. `include('.../head-user', {extraStylesheets: [...]})` (men man kan ikke bruge extraStylesheets i både `res.render(...` og `include('.../head-user...`. hvis den er begge steder så vil den blive overskrevet i ejs templaten f.eks. `include('.../head-user...`)
+		- `include('.../head-all', {stylesheets: [...]}))`
+		- dem som er tilføjet i defaultStylesheets her ovenfor i head.ejs
+		*/
+		const allStylesheets = [
+			...(defaultStylesheets ?? []),
+			...(locals.stylesheets ?? []),
+			...(locals.extraStylesheets ?? []),
+		];
+		allStylesheets.forEach((stylesheet) => { %>
+			<link rel="stylesheet" href="<%= stylesheet %>">
+		<% });
+		%>
+
+
+		<% /* ______ custom scripts ______ */ %>
+
+		<%-
+		/*
+		`
+		<script>
+			const csrfToken = "${locals.csrfToken}";
+		</script>
+		`
+		*/
+		%>
+
+		<%-
+		`
+		<script>
+			const reverseHeaderAndBodyBgColors = ${locals.reverseHeaderAndBodyBgColors};
+			const showHeaderNavbarCollapse = ${locals.showHeaderNavbarCollapse};
+		</script>
+		`
+		%>
+
+		<%
+		// tilføj all.js overalt på hjemmesiden
+		let defaultScripts = [
+			{
+				src: '/scripts/shared/all.js',
+			},
+		];
+		// tilføj dropdown.js på alle visitor-sider, user-sider og admin-sider (f.eks. '/admin-settings') (derfor ikke på auth sider som '/tilmeld' og '/login')
+		if (locals.isVisitorPage || locals.isUserPage || locals.isAdminPage) {
+			defaultScripts.push(
+				{
+					src: '/scripts/shared/dropdown.js',
+				},
+			);
+		}
+		// tilføj centered-content-form-pages.js på auth-sider og admin-sider (centered content form pages) (så f.eks. '/auth/tilmeld', '/auth/login' og '/admin/admin-settings')
+		if (locals.isAuthPage || locals.isAdminPage) {
+			defaultScripts.push(
+				{
+					src: '/scripts/shared/centered-content-form-pages.js',
+				},
+			);
+		}
+		// tilføj visitor.js på alle visitor-sider
+		if (locals.isVisitorPage) {
+			defaultScripts.push(
+				{
+					src: '/scripts/visitor/shared/visitor.js',
+				},
+			);
+		}
+		// tilføj user.js på alle user-sider
+		if (locals.isUserPage) {
+			defaultScripts.push(
+				{
+					src: '/scripts/user/shared/user.js',
+				},
+				{
+					src: '/scripts/user/shared/sidebar-user.js',
+				},
+				{
+					src: '/scripts/user/shared/organization-section.js',
+				},
+			);
+			
+			/* collapse-sidebar-wide.js bruges kun fordi der er en fejl. se collapse-sidebar-wide.css for mere info */
+			if (locals.showHeaderNavbarCollapse) {
+				defaultScripts.push(
+					{
+						src: '/scripts/user/shared/collapse-sidebar-wide.js',
+					},
+				);
+			}
+		}
+		/*
+		tilføj de scripts der er inkluderet i:
+		- `res.render('...', {extraScripts: [...]})` eller i f.eks. `include('.../head-user', {extraScripts: [...]})` (men man kan ikke bruge extraScripts i både `res.render(...` og `include('.../head-user...`. hvis den er begge steder så vil den blive overskrevet i ejs templaten f.eks. `include('.../head-user...`)
+		- `include('.../head-all', {scripts: [...]}))`
+		- dem som er tilføjet i defaultScripts her ovenfor i head.ejs
+		*/
+		const allScripts = [
+			...(defaultScripts ?? []),
+			...(locals.scripts ?? []),
+			...(locals.extraScripts ?? []),
+		];
+		allScripts.forEach((script) => { %>
+			<script<%- `${script.type ? ` type="${script.type}"` : ''} src="${script.src}"${(script.defer ?? true) ? ' defer' : ''}` %>></script>
+		<% });
+		%>
+	</head>
+
+	<% // default body classes hvis locals.bodyClasses ikke er deklareret
+	const collapseSidebarOpenAsDefault = locals.collapseSidebarOpenAsDefault ?? true;
+
+	let baseBodyClass_AllPages = 'd-flex';
+	baseBodyClass_AllPages += collapseSidebarOpenAsDefault ? ' sidebar-open' : ' sidebar-closed';
+	let baseBodyClass = '';
+	switch(true) {
+		case locals.isVisitorPage:
+			baseBodyClass = baseBodyClass_AllPages + ' ' + 'min-vh-100 flex-column visitor-page';
+			break;
+		case locals.isUserPage:
+			baseBodyClass = baseBodyClass_AllPages + ' ' + 'vh-100 flex-row user-page';
+			break;
+		case locals.isAuthPage:
+			baseBodyClass = baseBodyClass_AllPages + ' ' + 'min-vh-100 flex-column auth-page';
+			break;
+		case locals.isAdminPage:
+			baseBodyClass = baseBodyClass_AllPages + ' ' + 'min-vh-100 flex-column admin-page';
+			break;
+		default:
+			baseBodyClass = baseBodyClass_AllPages + ' ' + 'min-vh-100 flex-column';
+	}
+	%>
+	<% /* tilføj de classes og attributes der er inkluderet i include('.../head-all', {bodyClasses: '...', bodyClassesAdd: '...', bodyAttributes: '...'}) */ %>
+	<body class="<%= locals.bodyClasses ?? baseBodyClass; %> <%= locals.pageIdClasses ?? ''; %> <%= locals.bodyClassesAdd ?? ''; %>"<%- locals.bodyAttributes ?? ''; %>>
+
+
+		<% /* ______ svg billeder/ikoner ______ */ %>
+		<%
+		/* For at ændre en farve til det samme som link-body-emphasis (--bs-emphasis-color-rgb) så brug: #000000
+		For at ændre en farve til det samme som link-primary (--bs-primary-rgb) så brug: #0d6efd
+		For at ændre en farve til det samme som den anvendte link-color så brug currentColor og derefter en af disse classes i HTML filen: https://getbootstrap.com/docs/5.3/utilities/link/#colored-links */
+		%>
+		<%
+		// tilføj disse SVG-sprites overalt på hjemmesiden
+		let defaultSvgIncludes = [
+			// '',
+		];
+		// tilføj SVG-sprites til header.ejs og footer.ejs på alle visitor-sider
+		if (locals.isVisitorPage) {
+			defaultSvgIncludes.push(
+				// til header.ejs
+				'../svg/icons/bootstrap-icons/bi-person-circle',
+				// '../svg/logo/logo-svg',
+				'../svg/logo/ny-logo-svg',
+				// til footer.ejs
+				'../svg/icons/bootstrap-icons/bi-facebook',
+				'../svg/icons/bootstrap-icons/bi-instagram',
+				// '../svg/icons/bootstrap-icons/bi-twitter',
+				'../svg/icons/bootstrap-icons/bi-twitter-x',
+			);
+		}
+		/*
+		tilføj de svg-filer der er inkluderet i:
+		- `res.render('...', {extraSvgIncludes: [...]})` eller i f.eks. `include('.../head-user', {extraSvgIncludes: [...]})` (men man kan ikke bruge extraSvgIncludes i både `res.render(...` og `include('.../head-user...`. hvis den er begge steder så vil den blive overskrevet i ejs templaten f.eks. `include('.../head-user...`)
+		- `include('.../head-all', {svgIncludes: [...]}))`
+		- dem som er tilføjet i defaultSvgIncludes her ovenfor i head.ejs
+		*/ %>
+		<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+			<% 
+			const allSvgIncludes = [
+				...(defaultSvgIncludes ?? []),
+				...(locals.svgIncludes ?? []),
+				...(locals.extraSvgIncludes ?? []),
+			];
+			allSvgIncludes.forEach(svg => {
+				if (Array.isArray(svg)) {
+					const [path, variables] = svg; %>
+					<%- include(path, variables) %>
+				<% } else { %>
+					<%- include(svg) %>
+				<% }
+			}); %>
+		</svg>

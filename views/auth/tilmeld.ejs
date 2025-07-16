@@ -1,0 +1,44 @@
+<%- include('includes/shared/auth-page-top') %>
+
+<div class="col-12 text-center mb-3">
+	<h1 class="h3 mb-0 fw-normal">Tilmeld</h1>
+</div>
+<% if (locals.inputData.message) { %>
+	<%- include('../shared/includes/message') %>
+<% } %>
+<div class="col-12 mb-4">
+	<form action="/auth/tilmeld" method="POST">
+		<input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+		<div class="form-floating mb-3">
+			<input type="email" class="form-control" id="email" name="email" placeholder="E-mailadresse" value="<%= inputData.email %>" required>
+			<label for="email">E-mailadresse</label>
+		</div>
+		<div class="mb-3">
+			<% const passwordValidationAttributes = ' minlength="8" required'; %>
+			<div class="form-floating">
+				<input type="password" class="form-control rounded-bottom-0" id="password" name="password" placeholder="Adgangskode" aria-describedby="password-beskrivelse" value="<%= inputData.password %>"<%- passwordValidationAttributes %>>
+				<label for="password">Adgangskode</label>
+			</div>
+			<div class="form-floating">
+				<input type="password" class="form-control rounded-top-0" id="confirm-password" name="confirm-password" placeholder="Bekræft adgangskode" aria-describedby="password-beskrivelse" value="<%= inputData.confirmPassword %>"<%- passwordValidationAttributes %>>
+				<label for="confirm-password">Bekræft adgangskode</label>
+			</div>
+			<div id="password-beskrivelse" class="form-text">Indtast adgangskode (minimum 8 tegn)</div>
+		</div>
+		<div class="form-check mb-3">
+			<input type="checkbox" class="form-check-input" id="betingelser-checkbox" name="betingelser-checkbox" value="1"<%= inputData.betingelserCheckbox ? ' checked' : ''; %> required>
+			<label class="form-check-label" for="betingelser-checkbox">Jeg accepterer MyPromptCloud´s <a href="/brugsbetingelser" target="_blank">Brugsbetingelser</a> og <a href="/privatlivspolitik" target="_blank">Privatlivspolitik</a>.</label>
+		</div>
+		<button type="submit" class="btn btn-primary py-2 w-100">Tilmeld</button>
+	</form>
+</div>
+<div class="col-12 d-flex align-items-center mb-4">
+	<div class="flex-grow-1 border-bottom"></div>
+	<span class="mx-4 text-body-tertiary">eller</span>
+	<div class="flex-grow-1 border-bottom"></div>
+</div>
+<div class="col-12">
+	<p class="mb-0 text-center">Har du allerede en bruger?<span class="d-sm-none"><br></span><span class="d-none d-sm-inline"> </span><a href="/auth/login" class="link-primary link-offset-1">Log ind her</a></p>
+</div>
+
+<%- include('includes/shared/auth-page-bottom') %>

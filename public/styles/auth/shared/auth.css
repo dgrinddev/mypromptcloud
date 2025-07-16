@@ -1,0 +1,11 @@
+/* ______ styles til includes/tilmeld.ejs og includes/login.ejs ______ */
+
+/* størrelsen af logo uanset om SVG eller IMG */
+#logoImg {
+	height: 50px;
+}
+
+/* ændre hover-effekt på "Tilbage til forsiden"-knappen så den bevæger sig til venstre i stedet for til højre */
+#authNav .icon-link-hover {
+	--bs-icon-link-transform: translate3d(-0.25em, 0, 0);
+}

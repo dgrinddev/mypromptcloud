@@ -1,0 +1,71 @@
+<% /* alt i headeren der vises på alle visitor sider */ %>
+<header id="headerVisitor" class="sticky-top bg-body-tertiary border-bottom border-light-subtle">
+	<nav id="headerNavbar" class="navbar navbar-expand-md">
+		<div class="containerLg container-lg d-flex flex-wrap">
+			<% /* logoFileType: 'svg' eller 'img'. Bemærk at det måske er nødvendigt at ændre noget i css fil ved skift af logoFileType */ %>
+			<% if (0) { %>
+				<%- include('../../../shared/includes/nav-logo-img', {logoFileType: 'svg', containerTag: 'a', containerClass: 'navLogoImg-full d-flex navbar-brand link-primary me-0'}) %>
+			<% } else { %>
+				<%- include('../../../shared/includes/nav-logo-img', {filenameOrId: 'ny-logo', viewBoxValue: '0 0 113.75906 41.566093', logoFileType: 'svg', containerTag: 'a', containerClass: 'navLogoImg-full d-flex navbar-brand link-primary me-0'}) %>
+			<% } %>
+			<% /* const navLinkAddClasses = ' link-body-emphasis'; */ %>
+			<% const navLinkAddClasses = ''; %>
+			<% if (locals.isAuth) { %>
+				<ul class="navbar-nav me-2 me-md-0 order-2 order-md-3 ms-auto">
+					<li class="nav-item dropdown">
+						<%- include('../../../shared/includes/user-dropdown', {navLinkAddClasses: navLinkAddClasses, dropdownToggleAddClasses: 'btn-light btnLight'}) %>
+					</li>
+				</ul>
+			<% } else { %>
+				<div id="authBtn" class="d-flex me-2 me-md-0 order-2 order-md-3 ms-auto">
+					<a class="btn btn-primary" href="/auth/login">
+						<span id="authBtnLong">Tilmeld / Login</span>
+						<% /* denne blev brugt til hvis teksten skulle blive kortere på små enheder */ %>
+						<% /* <span id="authBtnShort">Login</span> */ %>
+					</a>
+				</div>
+			<% } %>
+			<% const headerNavbarToggler_animated = true; %>
+			<% const headerNavbarTogglerOpenAsDefault = false; %>
+			<button id="headerNavbarToggler" class="navbar-toggler<%= headerNavbarTogglerOpenAsDefault ? '' : ' collapsed'; %> navbarTogglerAnimated order-3 order-md-4 btn btn-light btnLight" type="button" data-bs-toggle="collapse" data-bs-target="#headerNavbarCollapse" aria-controls="headerNavbarCollapse" aria-expanded="<%= headerNavbarTogglerOpenAsDefault ? 'true' : 'false'; %>" aria-label="Toggle navigation">
+				<% if (headerNavbarToggler_animated) { %>
+					<span class="icon-container">
+						<span class="navbarTogglerIcon"></span>
+						<span class="navbarTogglerIcon"></span>
+						<span class="navbarTogglerIcon"></span>
+					</span>
+				<% } else { %>
+					<span class="navbar-toggler-icon"></span>
+				<% } %>
+			</button>
+			<div class="collapse navbar-collapse<%= headerNavbarTogglerOpenAsDefault ? ' show' : ''; %> order-4 order-md-2 ps-2" id="headerNavbarCollapse">
+				<ul class="navbar-nav me-auto mb-2 mb-md-0">
+					<li class="nav-item">
+						<a class="nav-link <%= navLinkAddClasses %><%= locals.currentPath === '/forside' ? ' active' : ''; %>"<%- locals.currentPath === '/forside' ? ' aria-current="page"' : ''; %> href="/forside">Forside</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link <%= navLinkAddClasses %><%= locals.currentPath === '/pris' ? ' active' : ''; %>"<%- locals.currentPath === '/pris' ? ' aria-current="page"' : ''; %> href="/pris">Pris</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a id="navFunktionerDropdown" class="dropdown-toggle nav-link <%= navLinkAddClasses %><%= locals.currentPath === '/funktioner' ? ' active' : ''; %>"<%- locals.currentPath === '/funktioner' ? ' aria-current="page"' : ''; %> href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Funktioner
+						</a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item <%= navLinkAddClasses %><%= locals.currentPath === '/funktioner' ? ' active' : ''; %>"<%- locals.currentPath === '/funktioner' ? ' aria-current="page"' : ''; %> href="/funktioner">Oversigt</a></li>
+							<li><hr class="dropdown-divider"></li>
+							<li><a class="dropdown-item <%= navLinkAddClasses %><%= locals.currentPath === '/automatisk-evaluering-looooooooool' ? ' active' : ''; %>"<%- locals.currentPath === '/automatisk-evaluering-looooooooool' ? ' aria-current="page"' : ''; %> href="/funktioner#">Organiser dine prompts</a></li>
+							<li><a class="dropdown-item <%= navLinkAddClasses %><%= locals.currentPath === '/overvaagning-looooooooool' ? ' active' : ''; %>"<%- locals.currentPath === '/overvaagning-looooooooool' ? ' aria-current="page"' : ''; %> href="/funktioner#">Forbedr prompts med AI</a></li>
+							<li><a class="dropdown-item <%= navLinkAddClasses %><%= locals.currentPath === '/integrationer-looooooooool' ? ' active' : ''; %>"<%- locals.currentPath === '/integrationer-looooooooool' ? ' aria-current="page"' : ''; %> href="/funktioner#">Privat og sikker opbevaring</a></li>
+						</ul>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link <%= navLinkAddClasses %><%= locals.currentPath === '/om' ? ' active' : ''; %>"<%- locals.currentPath === '/om' ? ' aria-current="page"' : ''; %> href="/om">Om MyPromptCloud</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
+
+<div id="contentWrapper" class="<%= locals.contentWrapperClasses ?? 'flex-fill' %> <%= locals.contentWrapperAddClasses ?? '' %>"><% /* opening contentWrapper */ %>
+	<main<%- locals.mainAttributes ?? '' %>><% /* opening main tag */ %>

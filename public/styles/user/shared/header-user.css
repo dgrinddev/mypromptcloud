@@ -1,0 +1,49 @@
+/* ______ styles til header på user-sider ______ */
+
+.offcanvasAndCollapseSidebarToggler .HeaderNavBtnIcon,
+#headerNavBtnGroup .HeaderNavBtnIcon,
+#headerNavBtnGroup_XsAndSm .HeaderNavBtnIcon,
+#newPromptBtn .HeaderNavBtnIcon {
+	width: 18px;
+	height: 18px;
+}
+
+
+/* hover-effekt på .collapseSidebarToggler (den hover til venstre når collapseSidebar er vist) */
+#collapseSidebarToggler:not(.collapsed):hover > svg,
+#collapseSidebarToggler:not(.collapsed):focus-visible > svg {
+	transform: var(--bs-icon-link-transform, translate3d(-0.25em, 0, 0));
+}
+.offcanvasAndCollapseSidebarToggler:hover > svg {
+	transition: .2s ease-in-out transform; /* transition-speed på .icon-link i bootstrap er også .2s ease-in-out */
+}
+/* hover-effekt på .collapseSidebarToggler.collapsed (den hover til højre når sidebar er skjult) og .offcanvasSidebarToggler */
+#collapseSidebarToggler.collapsed:hover > svg,
+#collapseSidebarToggler.collapsed:focus-visible > svg,
+#offcanvasSidebarToggler:hover > svg,
+#offcanvasSidebarToggler:focus-visible > svg {
+	transform: var(--bs-icon-link-transform, translate3d(0.25em, 0, 0));
+}
+
+/* dropdown-menuen var under #contentHeader så det har jeg fikset her */
+#navUserDropdown {
+	z-index: 1035;
+}
+
+/* for breakpoints xs og sm vises 2 btn-group-vertical ved siden af hindanden og for at få det til at se ud som om de hænger sammen har jeg fjernet runde hjørner på de hjørner der går ind mod midten samt fjernet border ind mod midten for den ene element */
+#headerNavBtnGroup_XsAndSm_left a:first-child {
+	border-top-right-radius: 0;
+}
+#headerNavBtnGroup_XsAndSm_left a:last-child {
+	border-bottom-right-radius: 0;
+}
+#headerNavBtnGroup_XsAndSm_right a:first-child {
+	border-top-left-radius: 0;
+}
+#headerNavBtnGroup_XsAndSm_right a:last-child {
+	border-bottom-left-radius: 0;
+}
+#headerNavBtnGroup_XsAndSm_right {
+	margin-left: -1px;
+}
+

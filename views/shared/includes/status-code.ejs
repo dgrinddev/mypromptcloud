@@ -1,0 +1,60 @@
+<div class="containerLg container-lg">
+	<section id="topSection" class="my-5">
+		<div class="row justify-content-center text-center pt-2 pt-lg-4">
+			<div class="col-lg-8 mb-4">
+				<%
+					let defaultErrorHeader;
+					let defaultErrorBody;
+					switch(locals.errorStatuscode) {
+						case 401:
+							defaultErrorHeader = '401 - Uautoriseret (not authenticated)';
+							defaultErrorBody = 'Du har ikke tilladelse til at få adgang til denne side. Kontroller venligst dine loginoplysninger, og prøv igen.';
+							break;
+						case 403:
+							defaultErrorHeader = '403 - Adgang Nægtet (not authorized)';
+							defaultErrorBody = 'Du har ikke de nødvendige rettigheder til at se denne side.';
+							break;
+						case 404:
+							defaultErrorHeader = '404 - Ressource Ikke Fundet';
+							defaultErrorBody = 'Det ser ud til, at den ressource, du leder efter, ikke eksisterer eller er blevet flyttet. Dette kan skyldes, at du har skrevet en forkert URL, eller at ressourcen ikke længere er tilgængelig.';
+							break;
+						case 500:
+							defaultErrorHeader = '500 - Intern Serverfejl';
+							defaultErrorBody = 'Noget gik galt på vores server. Prøv venligst igen senere.';
+							break;
+						default:
+							defaultErrorHeader = 'Ukendt Fejl';
+							defaultErrorBody = 'Der opstod en fejl. Vi er usikre på, hvad der skete. Prøv at opdatere siden, eller gå tilbage til forsiden.';
+					}
+
+					let defaultErrorBtnHref;
+					let defaultErrorBtnInner;
+					switch(locals.errorPageType) {
+						case 'visitor':
+							defaultErrorBtnHref = '/forside';
+							defaultErrorBtnInner = 'Gå til forsiden';
+							break;
+						case 'user':
+							defaultErrorBtnHref = '/user/prompts-get/all';
+							defaultErrorBtnInner = 'Gå til prompts';
+							break;
+						case 'auth':
+							defaultErrorBtnHref = '/auth/login';
+							defaultErrorBtnInner = 'Gå til Login-siden';
+							break;
+						case 'admin':
+							defaultErrorBtnHref = '/admin/admin-settings';
+							defaultErrorBtnInner = 'Gå til admin Indstillinger';
+							break;
+						default:
+							defaultErrorBtnHref = '/forside';
+							defaultErrorBtnInner = 'Gå til forsiden';
+					}
+				%>
+				<h1 class="display-4 fw-bold"><%= locals.errorHeader ?? defaultErrorHeader; %></h1>
+				<p class="lead"><%= locals.errorBody ?? defaultErrorBody; %></p>
+				<a class="btn btn-primary" href="<%= locals.errorBtnHref ?? defaultErrorBtnHref; %>"><%= locals.errorBtnInner ?? defaultErrorBtnInner; %></a>
+			</div>
+		</div>
+	</section>
+</div>

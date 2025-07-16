@@ -1,0 +1,170 @@
+<% // Nogle indstillinger
+const reverseHeaderAndBodyBgColors = locals.reverseHeaderAndBodyBgColorsSetting ?? true;
+const collapseSidebarOpenAsDefault = locals.collapseSidebarOpenAsDefaultSetting ?? true;
+const showHeaderNavbarCollapse = true;
+%>
+
+<% /* indlæser: <DOCTYPE>, opening <html>, <head> (som indeholder scripts, style sheets osv), opening body */ %>
+<%- include('../../../shared/includes/all/head-all', {
+	svgIncludes: [
+		/*
+		['../svg/logo/logo-svg', {
+			navLogoPrimaryFillColor: '#0d6efd',
+			navLogoSecondaryFillColor: '#000000'
+		}],
+		*/
+		['../svg/logo/ny-logo-svg', {
+			navLogoPrimaryFillColor: '#0d6efd',
+			// navLogoPrimaryFillColor: '#000000',
+			navLogoSecondaryFillColor: '#000000'
+		}],
+		['../svg/logo/logo-icon-svg', {navLogoPrimaryFillColor: '#0d6efd'}],
+		'../svg/icons/bootstrap-icons/bi-person-circle',
+		'../svg/icons/bootstrap-icons/bi-arrow-bar-right',
+		'../svg/icons/bootstrap-icons/bi-arrow-bar-left',
+		'../svg/icons/bootstrap-icons/bi-speedometer2',
+		'../svg/icons/bootstrap-icons/bi-share',
+		'../svg/icons/bootstrap-icons/bi-clock-history',
+		// '../svg/icons/bootstrap-icons/bi-question-circle',
+		'../svg/icons/bootstrap-icons/bi-cloud-download',
+		'../svg/icons/bootstrap-icons/bi-plus-circle',
+		'../svg/icons/bootstrap-icons/bi-three-dots',
+		'../svg/icons/bootstrap-icons/bi-trash',
+		'../svg/icons/bootstrap-icons/bi-check-lg',
+		'../svg/icons/bootstrap-icons/bi-house',
+		'../svg/icons/bootstrap-icons/bi-inbox',
+		'../svg/icons/bootstrap-icons/bi-arrow-left',
+		'../svg/icons/bootstrap-icons/bi-gear',
+		'../svg/icons/bootstrap-icons/bi-credit-card',
+		'../svg/icons/bootstrap-icons/bi-box-arrow-left',
+	],
+	reverseHeaderAndBodyBgColors: reverseHeaderAndBodyBgColors,
+	collapseSidebarOpenAsDefault: collapseSidebarOpenAsDefault,
+	showHeaderNavbarCollapse: showHeaderNavbarCollapse,
+})
+%>
+
+<%
+/* hvis der er nogle classes der skal tilføjes til alle nav-links så tilføj her */
+const navLinkAddClasses = '';
+
+let defaultColorTheme = 4;
+if (reverseHeaderAndBodyBgColors) {
+	defaultColorTheme = 5;
+}
+
+/* vælg farvetema til baggrund på sidebar, headerUser, contentHeader og contentBody samt border-color til sidebar, headerUser, contentHeader */
+let sidebarBgColor, headerBgColor, contentHeaderBgColor, contentBodyBgColor, borderClasses_headerUser_contentHeader_sidebar;
+switch(defaultColorTheme) {
+	case 1:
+		sidebarBgColor = 'bg-body-secondary';
+		headerBgColor = 'bg-body-tertiary';
+		contentHeaderBgColor = 'bg-body-tertiary';
+		contentBodyBgColor = 'bg-body';
+		borderClasses_headerUser_contentHeader_sidebar = 'border-light-subtle';
+		break;
+	case 2:
+		sidebarBgColor = 'bg-body-secondary';
+		headerBgColor = 'bg-light-subtle';
+		contentHeaderBgColor = 'bg-light-subtle';
+		contentBodyBgColor = 'bg-body';
+		borderClasses_headerUser_contentHeader_sidebar = 'border-light-subtle';
+		break;
+	case 3:
+		sidebarBgColor = 'bg-body-tertiary';
+		headerBgColor = 'bg-light-subtle';
+		contentHeaderBgColor = 'bg-light-subtle';
+		contentBodyBgColor = 'bg-body';
+		borderClasses_headerUser_contentHeader_sidebar = 'border-light-subtle';
+		break;
+	case 4: // denne bruges hvis reverseHeaderAndBodyBgColors = false
+		sidebarBgColor = 'bg-body-tertiary';
+		headerBgColor = 'bg-body';
+		contentHeaderBgColor = 'bg-body';
+		contentBodyBgColor = 'bg-body';
+		borderClasses_headerUser_contentHeader_sidebar = 'border-light-subtle';
+		break;
+	case 5: // denne bruges hvis reverseHeaderAndBodyBgColors = true
+		sidebarBgColor = 'bg-body-tertiary';
+		headerBgColor = 'bg-body';
+		contentHeaderBgColor = 'bg-body';
+		contentBodyBgColor = 'bg-light-subtle';
+		borderClasses_headerUser_contentHeader_sidebar = 'border-light-subtle';
+		break;
+	case 6: // bruges til test
+		sidebarBgColor = 'bg-info';
+		headerBgColor = 'bg-success';
+		contentHeaderBgColor = 'bg-danger';
+		contentBodyBgColor = 'bg-warning';
+		borderClasses_headerUser_contentHeader_sidebar = 'border-dark';
+		break;
+	default:
+		// default code
+}
+%>
+
+
+<% const alwaysShowLogoInSidebar = true; %>
+<% const sidebarSharedClasses = `overflow-y-auto overflow-x-hidden ${sidebarBgColor}`; %>
+
+<% /* #offcanvasSidebar */ %>
+<div id="offcanvasSidebar" class="offcanvasAndCollapseSidebar offcanvas offcanvas-start <%= sidebarSharedClasses %>" tabindex="-1">
+	<% /* inkluder 'sidebar-user' som har alt indholdet til sidebar (`<div class="SIDEBAR-headerBodyFooterWrapper"></div>`): */ %>
+	<%- include('sidebar-user', {
+		offcanvasOrCollapse: 'OFFCANVAS',
+		alwaysShowLogoInSidebar: alwaysShowLogoInSidebar,
+		borderClasses_headerUser_contentHeader_sidebar: borderClasses_headerUser_contentHeader_sidebar,
+	}) %>
+</div>
+
+<% const headerNavbarOpenAsDefault = false; %>
+<% /* ".collapseSidebarWide"-class er kun fordi der er en fejl. se collapse-sidebar-wide.css for mere info */ %>
+<% /* #collapseSidebar */ %>
+<aside id="collapseSidebar" class="offcanvasAndCollapseSidebar<%= headerNavbarOpenAsDefault && showHeaderNavbarCollapse ? ' collapseSidebarWide' : ''; %> collapse collapse-horizontal<%= collapseSidebarOpenAsDefault ? ' show' : ''; %> border-end <%= borderClasses_headerUser_contentHeader_sidebar %> <%= sidebarSharedClasses %>">
+	<% /* inkluder 'sidebar-user' som har alt indholdet til sidebar (`<div class="SIDEBAR-headerBodyFooterWrapper"></div>`): */ %>
+	<%- include('sidebar-user', {
+		offcanvasOrCollapse: 'COLLAPSE',
+		alwaysShowLogoInSidebar: alwaysShowLogoInSidebar,
+		borderClasses_headerUser_contentHeader_sidebar: borderClasses_headerUser_contentHeader_sidebar,
+	}) %>
+</aside>
+
+<% /* opening #headerAndContentWrapper: */ %>
+<div id="headerAndContentWrapper" class="d-flex flex-column flex-fill">
+	<% /* inkluder header-user (<header></header>): */ %>
+	<%- include('header-user', {
+		collapseSidebarOpenAsDefault: collapseSidebarOpenAsDefault,
+		navLinkAddClasses: navLinkAddClasses,
+		headerBgColor: headerBgColor,
+		borderClasses_headerUser_contentHeader_sidebar: borderClasses_headerUser_contentHeader_sidebar,
+		alwaysShowLogoInSidebar: alwaysShowLogoInSidebar,
+		reverseHeaderAndBodyBgColors: reverseHeaderAndBodyBgColors,
+		showHeaderNavbarCollapse: showHeaderNavbarCollapse,
+		headerNavbarOpenAsDefault: headerNavbarOpenAsDefault,
+	}) %>
+	<% /* opening #contentWrapper: */ %>
+	<div id="contentWrapper" class="flex-fill overflow-y-auto <%= contentBodyBgColor %> <%= locals.contentWrapperAddClasses ?? '' %>">
+		<%
+		const showContentHeader = locals.showContentHeaderSetting ?? true;
+		if (showContentHeader) { %>
+			<% /* opening #contentHeader: */ %>
+			<header id="contentHeader" class="sticky-top border-bottom <%= borderClasses_headerUser_contentHeader_sidebar %> <%= contentHeaderBgColor %>">
+				<div id="contentHeaderInside" class="containerLg container-lg <%= locals.cardLayout_containerAndRowClasses %>">
+					<div id="contentHeaderInside_row" class="row <%= locals.cardLayout_containerAndRowClasses %>">
+						<div id="contentHeaderInside_col" class="col">
+							<div id="contentHeaderInside_colInside" class="d-flex align-items-center <%= locals.cardLayout_contentHeaderInsidecolInside_pClass %>">
+								<%
+								const showContentHeaderIcon = locals.showContentHeaderIconSetting ?? true;
+								if (showContentHeaderIcon) { %>
+									<span id="contentHeaderIcon" class="iconBg"></span>
+								<% } %>
+								<h1 id="contentHeaderHeading" class="h5 fw-semibold<%= showContentHeaderIcon ? ' ps-3' : ''; %> mb-0 text-break"><%- locals.contentHeaderHeading_before %><%= locals.contentHeaderHeading %><%- locals.contentHeaderHeading_after %></h1>
+							</div>
+						</div>
+					</div>
+				</div>
+			</header><% /* closing #contentHeader: */ %>
+		<% } %>
+		<main id="contentBody" class="<%= locals.contentBodyAddClasses ?? '' %>"><% /* opening main tag (#contentBody) */ %>
+			<% /* opening #contentBodyInside */ %>
+			<div id="contentBodyInside" class="<%= locals.contentBodyInsideClasses ?? 'containerLg container-lg'; %> <%= locals.contentBodyInsideAddClasses ?? '' %> <%= locals.cardLayout_containerAndRowClasses ?? '' %>">

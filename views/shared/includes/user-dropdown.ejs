@@ -1,0 +1,108 @@
+<%
+/* eksempel: include('user-dropdown', {navLinkAddClasses: '...', dropdownMenuClasses: '...', dropdownMenuAddClasses: '...', dropdownIconInsideButton: '...'}) */
+
+/* tildel de classes specificeret i include('user-dropdown', {dropdownToggleAddClasses: '...'}). Hvis intet specificeret så bruges en tom string */
+const dropdownToggleAddTheseClasses = locals.dropdownToggleAddClasses ?? '';
+/* tildel de classes specificeret i include('user-dropdown', {navLinkAddClasses: '...'}). Hvis intet specificeret så bruges en tom string */
+const navLinkAddTheseClasses = locals.navLinkAddClasses ?? '';
+/* tildel de classes specificeret i include('user-dropdown', {dropdownMenuClasses: '...'}). Hvis intet specificeret så bruges en række standard classes */
+const dropdownMenuTheseClasses = locals.dropdownMenuClasses ?? 'dropdown-menu dropdown-menu-end mt-1 position-absolute';
+/* tildel de classes specificeret i include('user-dropdown', {dropdownMenuAddClasses: '...'}). Hvis intet specificeret så bruges en tom string */
+const dropdownMenuAddTheseClasses = locals.dropdownMenuAddClasses ?? '';
+/* Bestemmer om user-dropdown-ikonet skal være indeni en button eller ej */
+const dropdownIconInsideBtn = locals.dropdownIconInsideButton ?? true;
+
+if (dropdownIconInsideBtn) { /* hvis user-dropdown-ikonet skal være indeni en button: */
+%>
+	<a id="navUserDropdownToggle" class="dropdown-toggle btn btn-sm d-flex align-items-center iconInsideBtn <%= dropdownToggleAddTheseClasses %> <%= navLinkAddTheseClasses %>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<%
+} else { /* hvis user-dropdown-ikonet IKKE skal være indeni en button: */
+%>
+	<a id="navUserDropdownToggle" class="dropdown-toggle p-0 nav-link <%= dropdownToggleAddTheseClasses %> <%= navLinkAddTheseClasses %>" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+<%
+}
+%>
+	<%
+	if (locals.navProfileImgSrc) { /* hvis filnavn på profil-billede er i res.render('...', {navProfileImgSrc: '...jpg'}) */
+	%>
+		<div id="navUserImgContainer" class="navImgContainer">
+			<img id="navProfileImg" src="/images/shared/header/<%= navProfileImgSrc %>" alt="profile-icon" class="navImg rounded-circle">
+		</div>
+	<%
+	} else { /* ellers brug svg ikon */
+	%>
+		<svg id="navProfileImg" class="<% dropdownIconInsideBtn ? 'HeaderNavBtnIcon flex-shrink-0 me-2' : 'navImg flex-shrink-0'; %>"><use xlink:href="#bootstrapIcon-person-circle"></use></svg>
+		<% // hvis user-dropdown-ikonet skal være indeni en button så indsættes en span som består af 2 linjer (da dette vil skabe præcis den højde vi skal bruge fordi line-height er indstillet til en bestemt værdi for .btn-sm css fil)
+		if (dropdownIconInsideBtn) { %>
+			<span><span class="invisible">.</span><br><span class="invisible">.</span></span>
+		<% } %>
+	<%
+	}
+	%>
+</a>
+<ul id="navUserDropdown" class="<%= dropdownMenuTheseClasses %> <%= dropdownMenuAddTheseClasses %>">
+	<%
+	if (locals.isAdmin) { /* menupunkter til admin brugere */
+	%>
+		<% if (locals.isVisitorPage) { /* menupunkter når på en visitor-side */ %>
+			<li>
+				<a class="dropdown-item icon-link <%= navLinkAddTheseClasses %><%= locals.currentPath === '/admin/admin-settings' ? ' active' : ''; %>"<%- locals.currentPath === '/admin/admin-settings' ? ' aria-current="page"' : ''; %> href="/admin/admin-settings">
+					<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-gear"/></svg>
+					Admin Indstillinger
+				</a>
+			</li>
+		<% } else { /* menupunkter når på en admin-side */ %>
+			<li>
+				<a class="dropdown-item icon-link <%= navLinkAddTheseClasses %><%= locals.currentPath === '/forside' ? ' active' : ''; %>"<%- locals.currentPath === '/forside' ? ' aria-current="page"' : ''; %> href="/forside">
+					<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-arrow-left"/></svg>
+					Tilbage til forsiden
+				</a>
+			</li>
+		<% } %>
+		<li><hr class="dropdown-divider"></li>
+	<%
+	} else { /* menupunkter til IKKE-admin brugere */
+	%>
+		<% if (locals.isVisitorPage) { /* menupunkter når på en visitor-side */ %>
+			<li>
+				<a class="dropdown-item icon-link <%= navLinkAddTheseClasses %><%= locals.currentPath === '/user/prompts-get/all' ? ' active' : ''; %>"<%- locals.currentPath === '/user/prompts-get/all' ? ' aria-current="page"' : ''; %> href="/user/prompts-get/all">
+					<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-house"/></svg>
+					Gå til prompts
+				</a>
+			</li>
+		<% } else { /* menupunkter når på en user-side */ %>
+			<li>
+				<a class="dropdown-item icon-link <%= navLinkAddTheseClasses %><%= locals.currentPath === '/forside' ? ' active' : ''; %>"<%- locals.currentPath === '/forside' ? ' aria-current="page"' : ''; %> href="/forside">
+					<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-arrow-left"/></svg>
+					Tilbage til forsiden
+				</a>
+			</li>
+		<% } %>
+		<% /* menupunkter som altid vises (uanset om på en visitor-side eller user-side) */ %>
+		<li><hr class="dropdown-divider"></li>
+		<li>
+			<a class="dropdown-item icon-link <%= navLinkAddTheseClasses %><%= locals.currentPath === '/user/account/settings' ? ' active' : ''; %>"<%- locals.currentPath === '/user/account/settings' ? ' aria-current="page"' : ''; %> href="/user/account/settings">
+				<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-gear"/></svg>
+				Brugerindstillinger
+			</a>
+		</li>
+		<li>
+			<a class="dropdown-item icon-link <%= navLinkAddTheseClasses %><%= locals.currentPath === '/user/account/subscription' ? ' active' : ''; %>"<%- locals.currentPath === '/user/account/subscription' ? ' aria-current="page"' : ''; %> href="/user/account/subscription">
+				<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-credit-card"/></svg>
+				Abonnement
+			</a>
+		</li>
+	<%
+	}
+	%>
+	<% /* menupunkter som altid vises (uanset om admin bruger eller IKKE-admin bruger) */ %>
+	<li>
+		<form action="/auth/logout" method="POST">
+			<input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+			<button type="submit" class="dropdown-item icon-link <%= navLinkAddTheseClasses %>">
+				<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-box-arrow-left"/></svg>
+				Log ud
+			</button>
+		</form>
+	</li>
+</ul>

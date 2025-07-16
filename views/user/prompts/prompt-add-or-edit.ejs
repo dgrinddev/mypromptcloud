@@ -1,0 +1,209 @@
+<% // Nogle indstillinger
+const reverseHeaderAndBodyBgColorsSetting = true;
+const collapseSidebarOpenAsDefaultSetting = true;
+
+// Variabler der skal deles med nogle includes
+const cardLayout_containerAndRowClasses = `cardLayout_containerAndRowClasses gx-2 ${collapseSidebarOpenAsDefaultSetting ? 'gx-md-3 gx-lg-4' : 'gx-sm-3 gx-md-4'}`;
+const cardLayout_headerNavbar_paddingYClasses = `py-1 py-sm-2`;
+const cardLayout_headerNavbarInside_gyClasses = 'gy-5';
+const cardLayout_contentHeaderInsidecolInside_pClass = `cardLayout_contentHeaderInsidecolInside_pClass py-1 py-sm-2 px-2 ${collapseSidebarOpenAsDefaultSetting ? 'px-md-3' : 'px-sm-3'}`;
+%>
+
+<%- include('../includes/shared/head-user', {
+	reverseHeaderAndBodyBgColorsSetting: reverseHeaderAndBodyBgColorsSetting,
+	collapseSidebarOpenAsDefaultSetting: collapseSidebarOpenAsDefaultSetting,
+	showContentHeaderIconSetting: false,
+	extraStylesheets: [
+		'/styles/user/prompts/prompt-add-or-edit.css',
+		'/styles/user/prompts/autogrowing-textarea.css',
+	],
+	extraScripts: [
+		{src: '/scripts/shared/tooltip-activate.js'},
+		{src: '/scripts/user/prompts/shared/copy-and-clear-buttons.js', type: 'module'},
+		{src: '/scripts/user/prompts/prompt-add-or-edit.js', type: 'module'},
+		{src: '/scripts/user/prompts/autogrowing-textarea.js'},
+	],
+	extraSvgIncludes: [
+		'../svg/icons/bootstrap-icons/bi-exclamation-triangle-fill',
+		'../svg/icons/bootstrap-icons/bi-check-circle-fill',
+		'../svg/icons/bootstrap-icons/bi-magic',
+		'../svg/icons/bootstrap-icons/bi-copy',
+		'../svg/icons/bootstrap-icons/bi-check-lg',
+		'../svg/icons/bootstrap-icons/bi-x-lg',
+		'../svg/icons/bootstrap-icons/bi-backspace',
+	],
+	cardLayout_containerAndRowClasses: cardLayout_containerAndRowClasses,
+	cardLayout_headerNavbar_paddingYClasses: cardLayout_headerNavbar_paddingYClasses,
+	cardLayout_headerNavbarInside_gyClasses: cardLayout_headerNavbarInside_gyClasses,
+	cardLayout_contentHeaderInsidecolInside_pClass: cardLayout_contentHeaderInsidecolInside_pClass,
+})
+%>
+
+<%
+// Variabler der kun skal bruges her i denne fil
+const cardLayout_rowClasses = `cardLayout_rowClasses mb-1 ${collapseSidebarOpenAsDefaultSetting ? 'mb-md-2' : 'mb-sm-2'}`;
+const cardLayout_firstRowClasses = `cardLayout_firstRowClasses mt-1 ${collapseSidebarOpenAsDefaultSetting ? 'mt-md-2' : 'mt-sm-2'}`;
+const cardLayout_cardPaddingClasses = `cardLayout_cardPaddingClasses p-2 ${collapseSidebarOpenAsDefaultSetting ? 'p-md-3' : 'p-sm-3'}`;
+const cardLayout_cardBgClasses = `cardLayout_cardBgClasses ${collapseSidebarOpenAsDefaultSetting || reverseHeaderAndBodyBgColorsSetting ? 'bg-body' : 'bg-light-subtle'}`;
+const cardLayout_cardBorderClasses = 'border border-light-subtle rounded-2';
+const cardLayout_cardShadowClasses = 'shadow-sm';
+%>
+
+<div class="row <%= `${cardLayout_rowClasses} ${cardLayout_firstRowClasses} ${cardLayout_containerAndRowClasses}` %>">
+	<div class="col">
+		<div class="<%= `${ 0 ? cardLayout_cardBorderClasses : ''} ${cardLayout_cardPaddingClasses} ${ 0 ? cardLayout_cardBgClasses : ''} ${ 0 ? cardLayout_cardShadowClasses : ''}` %>">
+			<% if (locals.inputData.message) { %>
+				<%- include('../../shared/includes/message') %>
+			<% } %>
+			<form action="/user/prompt/add-or-edit<%= locals.prompt_id ? `/${locals.prompt_id}` : '' %>" method="POST">
+				<input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+				<div class="mb-3">
+					<label for="input_title" class="form-label">Titel</label>
+					<input type="text" class="form-control<%= inputData.validateRes && inputData.validateRes.input_title ? ' is-invalid' : '' %>" name="input_title" id="input_title" placeholder="Min prompt" value="<%= inputData.promptInputData.title %>"<%- inputData.validateRes && inputData.validateRes.input_title ? ' aria-describedby="input_title-feedback"' : '' %> required>
+					<% if (inputData.validateRes && inputData.validateRes.input_title) { %>
+						<div id="input_title-feedback" class="invalid-feedback">
+							<%= inputData.validateRes.input_title.message %>
+						</div>
+					<% } %>
+				</div>
+				<fieldset id="inputPrompttypeContainer" class="mb-3">
+					<legend class="col-form-label pt-0">Vælg prompt-type</legend>
+					<% const inputPrompttypeBtnClasses = `inputPrompttypeBtn btn btn-light btnLight btn-sm border-0 px-1 ${collapseSidebarOpenAsDefaultSetting ? 'px-md-2' : 'px-sm-2'}`; %>
+					<input type="radio" class="btn-check <%= inputData.validateRes && inputData.validateRes.input_prompttype ? ' is-invalid' : '' %>" name="input_prompttype" id="input_prompttype_text" value="text" autocomplete="off" <%= inputData.promptInputData.prompttype === 'text' ? 'checked' : '' %><%- inputData.validateRes && inputData.validateRes.input_prompttype ? ' aria-describedby="input_prompttype-feedback"' : '' %> required>
+					<label class="<%= inputPrompttypeBtnClasses %>" for="input_prompttype_text">Tekstgenerering</label>
+					<input type="radio" class="btn-check<%= inputData.validateRes && inputData.validateRes.input_prompttype ? ' is-invalid' : '' %>" name="input_prompttype" id="input_prompttype_image" value="image" autocomplete="off" <%= inputData.promptInputData.prompttype === 'image' ? 'checked' : '' %><%- inputData.validateRes && inputData.validateRes.input_prompttype ? ' aria-describedby="input_prompttype-feedback"' : '' %> required>
+					<label class="<%= inputPrompttypeBtnClasses %>" for="input_prompttype_image">Billedgenerering</label>
+					<input type="radio" class="btn-check<%= inputData.validateRes && inputData.validateRes.input_prompttype ? ' is-invalid' : '' %>" name="input_prompttype" id="input_prompttype_other" value="other" autocomplete="off" <%= inputData.promptInputData.prompttype === 'other' ? 'checked' : '' %><%- inputData.validateRes && inputData.validateRes.input_prompttype ? ' aria-describedby="input_prompttype-feedback"' : '' %> required>
+					<label class="<%= inputPrompttypeBtnClasses %>" for="input_prompttype_other">Andet</label>
+					<% if (inputData.validateRes && inputData.validateRes.input_prompttype) { %>
+						<div id="input_prompttype-feedback" class="invalid-feedback">
+							<%= inputData.validateRes.input_prompttype.message %>
+						</div>
+					<% } %>
+				</fieldset>
+				<div id="inputContentAndImprovedContentWrapper" class="border-light-subtle border-3 rounded-2<% if (typeof showImprovedContentElements !== 'undefined') { %> border borderStyle_double p-2 mb-3<% } %>">
+					<div id="inputContentContainer" class="mb-3">
+						<div class="mb-2 d-flex align-items-center justify-content-between">
+							<label for="input_content" class="form-label mb-0">Prompt</label>
+							<div class="ms-1">
+								<button type="button" id="improvePromptBtn" class="btn btn-secondary btn-sm icon-link py-0 px-1 <%= collapseSidebarOpenAsDefaultSetting ? 'px-md-2' : 'px-sm-2'; %>" data-csrf="<%= locals.csrfToken %>">
+									<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-magic"></use></svg>
+									<span class="ps-1">Forbedrér</span>
+								</button>
+								<button type="button" id="inputContentCopyBtn" class="contentCopyBtn btn btn-light btnExtraLight btn-sm icon-link py-0 px-3 <%= collapseSidebarOpenAsDefaultSetting ? 'px-md-2' : 'px-sm-2'; %>" data-bs-toggle="tooltip" data-bs-custom-class="tooltipAnimation" data-bs-title="Kopieret!" data-bs-trigger="manual">
+									<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-copy"></use></svg>
+									<span class="contentCopyBtnText ps-1 d-none <%= collapseSidebarOpenAsDefaultSetting ? 'd-md-block' : 'd-sm-block'; %>">Kopiér</span>
+								</button>
+								<button type="button" id="inputContentClearBtn" class="contentClearBtn btn btn-light btnExtraLight btn-sm icon-link py-0 px-3 <%= collapseSidebarOpenAsDefaultSetting ? 'px-md-2' : 'px-sm-2'; %>" data-bs-toggle="tooltip" data-bs-custom-class="tooltipAnimation" data-bs-title="Ryddet!" data-bs-trigger="manual">
+									<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-backspace"></use></svg>
+									<span class="contentClearBtnText ps-1 d-none <%= collapseSidebarOpenAsDefaultSetting ? 'd-md-block' : 'd-sm-block'; %>">Ryd</span>
+								</button>
+							</div>
+						</div>
+						<div class="textareaGrowWrap">
+							<textarea class="form-control text-break<%= inputData.validateRes && inputData.validateRes.input_content ? ' is-invalid' : '' %>" name="input_content" id="input_content" placeholder="Skriv din prompt her..." rows="3"<%- inputData.validateRes && inputData.validateRes.input_content ? ' aria-describedby="input_content-feedback"' : '' %> required><%= inputData.promptInputData.content %></textarea>
+
+							<% if (inputData.validateRes && inputData.validateRes.input_content) { %>
+								<div id="input_content-feedback" class="invalid-feedback">
+									<%= inputData.validateRes.input_content.message %>
+								</div>
+							<% } %>
+
+						</div>
+					</div>
+					<div id="improvedContentContainer" class="<% if (typeof showImprovedContentElements === 'undefined') { %>d-none<% }%>">
+						<div class="mb-2 d-flex align-items-center justify-content-between">
+							<label for="improved_content" class="form-label mb-0">Forslag til forbedring</label>
+							<div class="ms-1">
+								<button type="button" id="improvedContentCopyBtn" class="contentCopyBtn btn btn-light btnExtraLight btn-sm icon-link py-0 px-3 <%= collapseSidebarOpenAsDefaultSetting ? 'px-md-2' : 'px-sm-2'; %>" data-bs-toggle="tooltip" data-bs-custom-class="tooltipAnimation" data-bs-title="Kopieret!" data-bs-trigger="manual">
+									<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-copy"></use></svg>
+									<span class="contentCopyBtnText ps-1 d-none <%= collapseSidebarOpenAsDefaultSetting ? 'd-md-block' : 'd-sm-block'; %>">Kopiér</span>
+								</button>
+								<button type="button" id="improvedContentClearBtn" class="contentClearBtn btn btn-light btnExtraLight btn-sm icon-link py-0 px-3 <%= collapseSidebarOpenAsDefaultSetting ? 'px-md-2' : 'px-sm-2'; %>" data-bs-toggle="tooltip" data-bs-custom-class="tooltipAnimation" data-bs-title="Ryddet!" data-bs-trigger="manual">
+									<svg class="bi" aria-hidden="true"><use xlink:href="#bootstrapIcon-backspace"></use></svg>
+									<span class="contentClearBtnText ps-1 d-none <%= collapseSidebarOpenAsDefaultSetting ? 'd-md-block' : 'd-sm-block'; %>">Ryd</span>
+								</button>
+							</div>
+						</div>
+						<div class="textareaGrowWrap mb-2">
+							<textarea class="form-control text-break" name="improved_content" id="improved_content" placeholder="" rows="1"></textarea>
+						</div>
+						<div id="acceptOrDeclineImprovementBtnsWrapper" class="">
+							<button type="button" id="acceptImprovementBtn" class="acceptOrDeclineImprovementBtn btn btn-success btn-sm icon-link px-1 <%= collapseSidebarOpenAsDefaultSetting ? 'px-md-2' : 'px-sm-2'; %>">
+								<svg id="" class="bi"><use xlink:href="#bootstrapIcon-check-lg"></use></svg>
+								<span class="">Brug forslag</span>
+							</button>
+							<button type="button" id="declineImprovementBtn" class="acceptOrDeclineImprovementBtn btn btn-danger btn-sm icon-link px-1 <%= collapseSidebarOpenAsDefaultSetting ? 'px-md-2' : 'px-sm-2'; %>">
+								<svg id="" class="bi"><use xlink:href="#bootstrapIcon-x-lg"></use></svg>
+								<span class="">Brug oprindelig</span>
+							</button>
+						</div>
+						<div id="errorBtnWrapper" class="d-none">
+							<button type="button" id="errorBtn" class="btn btn-dark btn-sm ">
+								<span class="">OK</span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div id="input_organization-row" class="row mb-3">
+					<%
+					const organizationInputsConfig = [
+						{
+							type: 'folders',
+							labelSingular_da: 'mappe',
+							inputLabel: 'Mappe (ikke krævet)',
+							firstOptionLabel: 'Eventuelt vælg en mappe',
+							noOptionChosenFormText: `Gemmes i <em>Usorterede</em> hvis intet vælges`,
+							inputRequired: false,
+							organizationItems: locals.organizationSectionsItems.folders,
+						},
+						{
+							type: 'categories',
+							labelSingular_da: 'kategori',
+							inputLabel: 'Kategori (ikke krævet)',
+							firstOptionLabel: 'Eventuelt vælg en kategori',
+							noOptionChosenFormText: ``,
+							inputRequired: false,
+							organizationItems: locals.organizationSectionsItems.categories,
+						},
+					];
+					let organizationInputsCounter = 0;
+					let organizationInputsLastItemIndex = organizationInputsConfig.length - 1;
+					organizationInputsConfig.forEach((organization) => { %>
+						<div class="input_organization-col col-12 <%= collapseSidebarOpenAsDefaultSetting ? 'col-lg-6' : 'col-sm-6' %><%= organizationInputsCounter !== organizationInputsLastItemIndex ? ` notLastItem mb-3 ${collapseSidebarOpenAsDefaultSetting ? 'mb-lg-0' : 'mb-sm-0'}` : '' %>">
+							<label for="input_organization_<%= organization.type %>" class="form-label"><%= organization.inputLabel %></label>
+							<select class="form-select<%= inputData.validateRes && inputData.validateRes[`input_organization_${organization.type}`] ? ' is-invalid' : '' %>" name="input_organization_<%= organization.type %>" id="input_organization_<%= organization.type %>"<%- organization.noOptionChosenFormText && !(inputData.validateRes && inputData.validateRes[`input_organization_${organization.type}`]) ? ` aria-describedby="input_organization_${organization.type}-description"` : '' %><%- inputData.validateRes && inputData.validateRes[`input_organization_${organization.type}`] ? ` aria-describedby="input_organization_${organization.type}-feedback"` : '' %> <%= organization.inputRequired ? 'required' : '' %> <%= organization.organizationItems === undefined || organization.organizationItems.length == 0 ? 'disabled' : '' %>>
+								<% if (organization.organizationItems === undefined || organization.organizationItems.length == 0) { %>
+									<option value="" selected>Tilføj evt. en <%= organization.labelSingular_da %> i sidepanelet</option>
+								<% } else { %>
+									<option value=""<%= inputData.promptInputData[`organization_${organization.type}`] === '' ? ' selected' : '' %>><%- organization.firstOptionLabel %></option>
+									<%
+									let organizationItemsCounter = 0;
+									organization.organizationItems.forEach((item) => { %>
+										<option value="<%= item.id %>"<%= inputData.promptInputData[`organization_${organization.type}`] === item.id ? ' selected' : '' %>><%= item.name %></option>
+									<% organizationItemsCounter++; }); %>
+								<% } %>
+							</select>
+							<% if (inputData.validateRes && inputData.validateRes[`input_organization_${organization.type}`]) { %>
+								<div id="input_organization_<%= organization.type %>-feedback" class="invalid-feedback">
+									<%= inputData.validateRes[`input_organization_${organization.type}`].message %>
+								</div>
+							<% } else if (organization.noOptionChosenFormText) { %>
+								<div id="input_organization_<%= organization.type %>-descriptionContainer" class="form-text input_organization-descriptionContainer doesntHaveContent <%= collapseSidebarOpenAsDefaultSetting ? 'doesntHaveContent_d-lg-block' : 'doesntHaveContent_d-sm-block' %>">
+									<span id="input_organization_<%= organization.type %>-description" class="d-none">
+										<%- organization.noOptionChosenFormText %>
+									</span>
+								</div>
+							<% } %>
+						</div>
+					<% organizationInputsCounter++; }); %>
+				</div>
+				<span id="submitBtnTooltip" class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" data-bs-custom-class="tooltipImportant" data-bs-title="Inden du kan gemme skal du vælge om du vil bruge foreslået prompt eller oprindelig prompt!" data-bs-trigger="click">
+					<button id="submitBtn" type="submit" class="btn btn-primary">Gem</button>
+				</span>
+			</form>
+		</div>
+	</div>
+</div>
+
+<%- include('../includes/shared/foot-user') %>

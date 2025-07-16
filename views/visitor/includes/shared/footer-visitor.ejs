@@ -1,0 +1,109 @@
+	</main><% /* closing main tag */ %>
+</div><% /* closing contentWrapper */ %>
+
+<% /* ______ alt i footeren der vises på alle visitor sider ______ */ %>
+<footer class="bg-body-tertiary border-top border-light-subtle">
+	<div class="containerLg container-lg">
+		<div class="row my-4">
+			<% const linkSections = [
+				{
+					sectionTitle: 'Nyttinge links',
+					sectionItems: [
+						{text: 'ChatGPT', href: 'https://openai.com/chatgpt/', target: '_blank'},
+						{text: 'Midjourney', href: 'https://www.midjourney.com/home', target: '_blank'},
+						{text: 'DALL·E 3', href: 'https://openai.com/index/dall-e-3/', target: '_blank'},
+						{text: 'Stable Diffusion', href: 'https://stability.ai', target: '_blank'},
+					]
+				},
+				{
+					sectionTitle: 'Viden & info',
+					sectionItems: [
+						{text: 'DeepMind', href: 'https://deepmind.google', target: '_blank'},
+						{text: 'AI Ethics Guidelines', href: 'https://digital-strategy.ec.europa.eu/en/library/ethics-guidelines-trustworthy-ai', target: '_blank'},
+						{text: 'AI Index', href: 'https://aiindex.stanford.edu', target: '_blank'},
+						{text: 'AI community', href: 'https://huggingface.co', target: '_blank'},
+					]
+				}
+			];
+			const useActiveClassInFooterNav = true;
+			linkSections.forEach((linkSection) => { %>
+				<div class="col-6 col-sm-3 mb-4 mb-sm-0">
+					<h5><%= linkSection.sectionTitle %></h5>
+					<ul class="nav flex-column">
+						<% let sectionItemsCounter = 0;
+						let sectionItemsLastItemIndex = linkSection.sectionItems.length - 1;
+						linkSection.sectionItems.forEach((item) => { %>
+							<li class="nav-item<%= (sectionItemsCounter !== sectionItemsLastItemIndex) ? ' mb-2' : ''; %>">
+								<a class="p-0 nav-link<%= 0 ? ' text-body-secondary' : ' link-secondary' %><%= locals.currentPath === item.href && useActiveClassInFooterNav ? ' active' : ''; %>"<%- locals.currentPath === item.href && useActiveClassInFooterNav ? ' aria-current="page"' : ''; %> href="<%= item.href %>" target="<%= item.target %>">
+									<%= item.text %>
+								</a>
+							</li>
+						<% sectionItemsCounter++; }); %>
+					</ul>
+				</div>
+			<% }); %>
+			<div id="newsletterCol" class="col-12 col-sm-6 offset-lg-1 col-lg-5">
+				<h5>Tilmeld dig nyhedsbrevet</h5>
+				<p>Månedlige nyheder om nye ting fra MyPromptCloud.</p>
+				<form id="newsletterForm" class="d-flex flex-column flex-sm-row gap-2">
+					<div class="flex-sm-grow-1">
+						<label for="inputEmail" class="visually-hidden">E-mailadresse</label>
+						<input type="text" class="form-control" id="inputEmail" placeholder="E-mailadresse">
+					</div>
+					<button type="submit" class="btn btn-primary">Tilmeld</button>
+				</form>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12">
+				<div class="border-bottom"></div>
+			</div>
+		</div>
+		<div id="footerBottomRow" class="row my-3">
+			<div class="col-12 col-sm flex-sm-grow-1 mb-3 mb-sm-0">
+				<small class="text-secondary">&copy; <%= new Date().getFullYear() %> MyPromptCloud - Udviklet af Daniel Grinderslev</small>
+			</div>
+			<div id="footerSoMeIconsList" class="col-12 col-sm flex-sm-grow-0">
+				<nav class="nav flex-nowrap">
+					<%
+					const soMeIcons = [
+						{
+							iconHref: 'https://www.x.com/',
+							iconId: 'bootstrapIcon-twitter-x',
+							iconAltDesc: 'twitter-x-icon',
+							adminSettingsShow: '1',
+						},
+						{
+							iconHref: 'https://www.instagram.com/',
+							iconId: 'bootstrapIcon-instagram',
+							iconAltDesc: 'instagram-icon',
+							adminSettingsShow: '1',
+						},
+						{
+							iconHref: 'https://www.facebook.com/',
+							iconId: 'bootstrapIcon-facebook',
+							iconAltDesc: 'facebook-icon',
+							adminSettingsShow: '1',
+						}
+					];
+					let adminSettingsColor;
+					if (locals.adminSettings) {
+						soMeIcons[0].adminSettingsShow = locals.adminSettings.soMeIconX_checkbox ? parseInt(locals.adminSettings.soMeIconX_checkbox) : '1';
+
+						soMeIcons[1].adminSettingsShow = locals.adminSettings.soMeIconInsta_checkbox ? parseInt(locals.adminSettings.soMeIconInsta_checkbox) : '1';
+
+						soMeIcons[2].adminSettingsShow = locals.adminSettings.soMeIconFacebook_checkbox ? parseInt(locals.adminSettings.soMeIconFacebook_checkbox) : '1';
+
+						adminSettingsColor = locals.adminSettings.soMeIconsColor ?? '';
+					}
+					let footerSoMeIconsCounter = 0;
+					soMeIcons.forEach((soMeIcon) => { %>
+						<a href="<%= soMeIcon.iconHref %>" class="nav-link<%= 0 ? ' link-body-emphasis' : ' link-secondary'; %> p-0<%= footerSoMeIconsCounter !== 0 ? ' ms-3' : ''; %><%= soMeIcon.adminSettingsShow ? '' : ' d-none' %>"<% if (adminSettingsColor) { %> style="color: <%= adminSettingsColor %> !important;"<% } %> target="_blank">
+							<svg class="svgIcon"><use xlink:href="#<%= soMeIcon.iconId %>"></use></svg>
+						</a>
+					<% footerSoMeIconsCounter++; }); %>
+				</nav>
+			</div>
+		</div>
+	</div>
+</footer>

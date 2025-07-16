@@ -1,0 +1,103 @@
+/* ______styles til at animere #headerNavbarToggler.navbarTogglerAnimated når den åbnes og lukkes______ */
+
+/* Base styling for the toggler */
+#headerNavbarToggler.navbarTogglerAnimated {
+	position: relative;
+	width: 50px;  /* Adjust width to fit your design */
+	height: 40px; /* Adjust height to fit your design */
+	align-items: center;
+	justify-content: center;
+}
+
+
+/* ___DETTE ER DISPLAY VÆRDIEN FOR #headerUser:___ */
+/* Anvend `display: flex;` på xs, sm og md breakpoint når collapseSidebar er lukket/skjult */
+@media (max-width: calc(992px - 0.02px)) {
+	#headerUser .navbar-expand-lg #headerNavbarToggler.navbarTogglerAnimated {
+		display: flex;
+	}
+}
+/* Anvend `display: flex;` på xs, sm, md og lg breakpoint når collapseSidebar er åben/vist */
+@media (max-width: calc(1200px - 0.02px)) {
+	#headerUser .navbar-expand-xl #headerNavbarToggler.navbarTogglerAnimated {
+		display: flex;
+	}
+}
+
+/* ___DETTE ER DISPLAY VÆRDIEN FOR #headerVisitor:___ */
+/* Anvend `display: flex;` på xs og sm breakpoint */
+@media (max-width: calc(768px - 0.02px)) {
+	#headerVisitor #headerNavbarToggler.navbarTogglerAnimated {
+		display: flex;
+	}
+}
+
+
+#headerNavbarToggler.navbarTogglerAnimated .icon-container {
+	position: relative;
+	width: 25px;
+	height: 20px;
+}
+
+#headerNavbarToggler.navbarTogglerAnimated .navbarTogglerIcon {
+	display: block;
+	position: absolute;
+	width: 25px;
+	height: 2px;
+	transition: all .35s ease-in-out; /* den er sat til .35s fordi jeg tror det er det samme som navbar har når den åbner/lukker */
+}
+
+/* Farver til bjælkerne (dette er noget jeg selv har indsat) */
+#headerNavbarToggler.navbarTogglerAnimated.btnExtraLight .navbarTogglerIcon {
+	background-color: #565b5e;
+}
+#headerNavbarToggler.navbarTogglerAnimated.btnLight .navbarTogglerIcon {
+	background-color: #565b5e;
+}
+#headerNavbarToggler.navbarTogglerAnimated.btnExtraLight:hover .navbarTogglerIcon {
+	background-color: var(--bs-btn-color);
+}
+#headerNavbarToggler.navbarTogglerAnimated.btnLight:hover .navbarTogglerIcon {
+	background-color: #56595b;
+}
+
+/* Positioning for each bar of the hamburger */
+#headerNavbarToggler.navbarTogglerAnimated .navbarTogglerIcon:nth-child(1) {
+	top: 0;
+}
+
+#headerNavbarToggler.navbarTogglerAnimated .navbarTogglerIcon:nth-child(2) {
+	top: 9px; /* Centered between the top and bottom bars */
+}
+
+#headerNavbarToggler.navbarTogglerAnimated .navbarTogglerIcon:nth-child(3) {
+	top: 18px;
+}
+
+#headerNavbarToggler.navbarTogglerAnimated:not(.collapsed) .navbarTogglerIcon:nth-child(1) {
+	transform: rotate(45deg);
+	top: 9px; /* Centered position */
+}
+
+#headerNavbarToggler.navbarTogglerAnimated:not(.collapsed) .navbarTogglerIcon:nth-child(2) {
+	opacity: 0;
+}
+
+#headerNavbarToggler.navbarTogglerAnimated:not(.collapsed) .navbarTogglerIcon:nth-child(3) {
+	transform: rotate(-45deg);
+	top: 9px; /* Centered position */
+}
+
+#headerNavbarToggler.navbarTogglerAnimated.collapsed .navbarTogglerIcon:nth-child(1) {
+	top: 0;
+	transform: rotate(0);
+}
+
+#headerNavbarToggler.navbarTogglerAnimated.collapsed .navbarTogglerIcon:nth-child(2) {
+	opacity: 1;
+}
+
+#headerNavbarToggler.navbarTogglerAnimated.collapsed .navbarTogglerIcon:nth-child(3) {
+	top: 18px;
+	transform: rotate(0);
+}

@@ -1,0 +1,8 @@
+/* Dette bruges fordi der er en fejl der gør at sidebaren ændrer bredde når headerNavbar åbnes og lukkes */
+@media (min-width: 576px) and (max-width: calc(992px - 0.02px)) {
+	#collapseSidebar.collapseSidebarWide.show {
+		/*
+		width: 521px !important;
+		*/
+	}
+}

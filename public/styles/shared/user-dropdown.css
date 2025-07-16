@@ -1,0 +1,22 @@
+/* ______ styles til user-dropdown i header på alle sider der bruger den (alle sider undtagen auth-sider som ingen header har. "/admin-settings" bruger den også) ______ */
+
+/* BEMÆRK: nogle af disse styles kan have effekt på andet i headeren end bare user-dropdown så hvis jeg laver en header uden user-dropdown så tjek om nogle af disse styles er nødvendige at kopiere over */
+
+/* størrelsen af profilbillede/profil-ikon når det er inde i en button */
+a.iconInsideBtn > #navProfileImg {
+	/* dette forudsætter at billedet er kvadratisk */
+	width: 24px;
+	height: 24px;
+}
+
+/* størrelsen af profilbillede/profil-ikon når det IKKE er inde i en button */
+a:not(.iconInsideBtn) > #navProfileImg {
+	/* dette forudsætter at billedet er kvadratisk */
+	width: 32px;
+	height: 32px;
+}
+
+/* der er indsat 2 linjer tekst i user-dropdown knappen med line-height på 1.0715 for at give knappen præcis 40px i højde */
+#navUserDropdownToggle.btn-sm {
+	--bs-btn-line-height: 1.0715;
+}

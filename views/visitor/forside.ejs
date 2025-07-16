@@ -1,0 +1,119 @@
+<% /* indlæser: <DOCTYPE>, opening <html>, <head> (som indeholder scripts, style sheets osv), opening body */ %>
+<%- include('../shared/includes/all/head-all', {
+	stylesheets: ['/styles/visitor/forside.css'],
+	extraSvgIncludes: [
+		'../svg/icons/bootstrap-icons/bi-house',
+		'../svg/icons/bootstrap-icons/bi-gear',
+		'../svg/icons/bootstrap-icons/bi-credit-card',
+		'../svg/icons/bootstrap-icons/bi-box-arrow-left',
+	],
+})
+%>
+<% /* indlæser: <header> (som indeholder navigation-bar), opening <main> */ %>
+<%- include('includes/shared/header-visitor') %>
+
+<% /* herunder er indholdet mellem <main></main> tags */ %>
+
+<div class="containerLg container-lg">
+	<% /* Normalt er HTML Semantic Elements yderst. Grunden til at <section> er nested inde i ".container-lg" er at der kan være flere sections i en containeren */ %>
+	<section id="heroSection" class="border-bottom my-5">
+		<div class="row justify-content-center text-center pt-2 pt-lg-4">
+			<div class="col-lg-8 mb-4">
+				<h1 class="display-4 fw-bold">Simpel organisering af dine prompts</h1>
+				<p class="lead">Saml, organiser og forbedr dine AI-prompts nemt med MyPromptCloud. Boost din kreativitet og effektivitet i arbejdet med generative AI-værktøjer.</p>
+			</div>
+			<div class="col-12 d-grid gap-2 d-sm-block mb-5">
+				<a class="btn btn-primary btn-lg me-sm-4 px-4" href="/auth/tilmeld">Prøv gratis</a>
+				<a class="btn btn-outline-secondary btn-lg px-4" href="#newsletterCol">Tilmeld nyhedsbrev</a>
+			</div>
+			<div class="col-12 overflow-hidden px-5 pb-4" style="max-height: 30vh;">
+				<img src="/images/visitor/forside/screenshot.png" class="img-fluid border rounded-3 shadow-lg" alt="screenshot" width="700" loading="lazy">
+			</div>
+		</div>
+	</section>
+	<section id="featuresSection" class="my-5">
+		<div id="featuresSectionTopRow" class="row mb-1 mb-lg-5">
+			<% const topFeatures = [
+				{
+					iconSrc: '/images/shared/icons/bi-collection.svg',
+					iconAltDesc: 'organisering-ikon',
+					heading: 'Organiser dine prompts',
+					body: `Hold styr på dine AI-prompts med mapper og kategorier. MyPromptCloud gør det nemt at finde og genbruge dine bedste idéer.`,
+					btnInner: 'Kom i gang med at organisere',
+					btnHref: '/auth/tilmeld',
+				},
+				{
+					iconSrc: '/images/visitor/forside/icons/bi-magic.svg',
+					iconAltDesc: 'magic-ikon',
+					heading: 'Forbedr prompts med AI',
+					body: `Optimer dine prompts ved hjælp af AI-teknologi. MyPromptCloud hjælper dig med at skabe mere effektive og præcise prompts.`,
+					btnInner: 'Forbedr dine prompts nu',
+					btnHref: '/auth/tilmeld',
+				}
+			];
+			topFeatures.forEach((topFeature) => { %>
+				<div class="featuresSectionFeature col-12 col-md-6 d-flex justify-content-start mb-5 mb-lg-0">
+					<div class="me-3">
+						<div class="featureImgContainer bg-body-secondary rounded-4">
+							<img src="<%= topFeature.iconSrc %>" alt="<%= topFeature.iconAltDesc %>">
+						</div>
+					</div>
+					<div>
+						<h3 class="fs-2"><%= topFeature.heading %></h3>
+						<p><%= topFeature.body %></p>
+						<a class="btn btn-outline-secondary" href="<%= topFeature.btnHref %>"><%= topFeature.btnInner %></a>
+					</div>
+				</div>
+			<% }); %>
+		</div>
+		<div id="featuresSectionBottomRow" class="row">
+			<% const bottomFeatures = [
+				{
+					iconSrc: '/images/visitor/forside/icons/bi-copy.svg',
+					iconAltDesc: 'kopiering-ikon',
+					heading: 'Hurtig kopiering',
+					body: `Kopiér dine prompts til udklipsholderen med et enkelt klik, så du hurtigt kan bruge dem i dine projekter.`
+				},
+				{
+					iconSrc: '/images/visitor/forside/icons/bi-shield-lock.svg',
+					iconAltDesc: 'skjold-med-nøglehul-ikon',
+					heading: 'Privat og sikker opbevaring',
+					body: `Dine prompts forbliver altid private og deles aldrig med andre. Kun du har adgang til dine AI-prompts.`
+				},
+				{
+					iconSrc: '/images/visitor/forside/icons/bi-pencil-square.svg',
+					iconAltDesc: 'blyant-ikon',
+					heading: 'Enkel redigering og sletning',
+					body: `Rediger og slet nemt dine gemte prompts for at holde din samling opdateret og relevant.`
+				},
+				{
+					iconSrc: '/images/visitor/forside/icons/bi-card-heading.svg',
+					iconAltDesc: 'overskrift-ikon',
+					heading: 'Tilføjelse af titel til prompts',
+					body: `Giv hver prompt en unik titel for nem genkendelse og bedre organisering.`
+				}
+			];
+			let bottomFeaturesCounter = 0;
+			let bottomFeaturesLastItemIndex = bottomFeatures.length - 1;
+			let bottomFeatures2ndLastItemIndex = bottomFeaturesLastItemIndex - 1;
+			bottomFeatures.forEach((bottomFeature) => { %>
+				<div class="featuresSectionFeature col-12 col-sm-6 col-lg-3 d-flex justify-content-start<%= bottomFeaturesCounter !== bottomFeaturesLastItemIndex ? ' mb-4' : ''; %><%= bottomFeaturesCounter < bottomFeatures2ndLastItemIndex ? ' mb-lg-0' : ''; %><%= bottomFeaturesCounter === bottomFeatures2ndLastItemIndex ? ' mb-sm-0' : ''; %>">
+					<div class="me-3">
+						<div class="featureImgContainer">
+							<img src="<%= bottomFeature.iconSrc %>" alt="<%= bottomFeature.iconAltDesc %>">
+						</div>
+					</div>
+					<div>
+						<h3 class="fs-4 mb-0 fw-bold"><%= bottomFeature.heading %></h3>
+						<p class="mb-0"><%= bottomFeature.body %></p>
+					</div>
+				</div>
+			<% bottomFeaturesCounter++; }); %>
+		</div>
+	</section>
+</div>
+
+<% /* indlæser: closing </main>, <footer> (som indeholder copyright mm) */ %>
+<%- include('includes/shared/footer-visitor') %>
+<% /* indlæser: popper.js, bootstrap.js, closing </body>, closing </html> */ %>
+<%- include('../shared/includes/all/foot-all') %>

@@ -1,0 +1,56 @@
+/* ______ styles til header på alle visitor-sider og user-sider ______ */
+
+/* størrelsen af logo uanset om SVG eller IMG */
+#navLogoImg {
+	width: 100%;
+	max-height: 40px;
+}
+
+/* max bredde af logo når det er det fulde logo */
+.navLogoImg-full #navLogoImg {
+	max-width: calc((var(--logoViewBoxWidth) / var(--logoViewBoxHeight)) * var(--navbarContentHeight));
+}
+/* max bredde af logo når det er ikonet fra logo */
+.navLogoImg-icon #navLogoImg {
+	max-width: calc((var(--logoIconViewBoxWidth) / var(--logoIconViewBoxHeight)) * var(--navbarContentHeight));
+}
+
+/* størrelsen af ikoner når de er inde i en button (dette har ingen effekt på "user-dropdown"-knappen) */
+.HeaderNavBtnIcon {
+	/* dette forudsætter at billedet/ikon er kvadratisk */
+	width: 24px;
+	height: 24px;
+}
+
+/* der er indsat 2 linjer tekst i knapperne med line-height på 1.0715 for at give knapperne præcis 40px i højde */
+#headerUser .btn-sm {
+	--bs-btn-line-height: 1.0715;
+}
+
+
+
+/* ___DETTE ER STYLING FOR #headerNavbarToggler:___ */
+#headerNavbarToggler {
+	border-radius: 0.25rem;
+}
+#headerNavbarToggler.btnExtraLight {
+	background-color: var(--bs-light);
+	color: #565b5e;
+	border-color: var(--bs-secondary-bg);
+}
+#headerNavbarToggler.btnLight {
+	background-color: #eff3f7;
+	color: #565b5e;
+	border-color: #e6e9ed;
+}
+#headerNavbarToggler.btnExtraLight:hover {
+	background-color: var(--bs-secondary-bg);
+	color: var(--bs-btn-color);
+	border-color: var(--bs-border-color);
+}
+#headerNavbarToggler.btnLight:hover {
+	background-color: var(--bs-secondary-bg);
+	color: #56595b;
+	border-color: #d5dce2;
+}
+
