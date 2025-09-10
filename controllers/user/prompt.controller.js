@@ -1,5 +1,9 @@
 // import Anthropic from '@anthropic-ai/sdk';
-const Anthropic = require('@anthropic-ai/sdk');
+// const Anthropic = require('@anthropic-ai/sdk');
+
+// import OpenAI from 'openai';
+const OpenAI = require('openai');
+
 require('dotenv').config()
 
 const Prompt = require('../../models/user/prompt.model');
@@ -288,26 +292,52 @@ Provide the improved prompt directly below, with no additional text, symbols, or
 			const testMode = false; // hvis denne er true så vil den aldrig sende en request til AI api.
 			if (!testMode) {
 				const aiAPI = {
+					/*
 					claude: {
 						models: {
 							Claude_3_5_Sonnet: 'claude-3-5-sonnet-20240620', // INPUT: $3/MTok . OUTPUT: $15/MTok
 							Claude_3_Haiku: 'claude-3-haiku-20240307', // INPUT: $0.25/MTok . OUTPUT: $1.25/MTok
 						},
 					},
-					chatgpt: {},
+					*/
+					chatgpt: {
+						models: {
+							gpt_5_thinking: 'gpt-5',
+						},
+					},
 				};
+				/*
 				const anthropic = new Anthropic({
 					apiKey: process.env['ANTHROPIC_API_KEY'],
 				});
+				*/
+				const client = new OpenAI({
+					apiKey: process.env['OPENAI_API_KEY'],
+				});
+
+				/*
 				output = await anthropic.messages.create({
 					model: aiAPI.claude.models.Claude_3_5_Sonnet,
 					max_tokens: maxNumberOfTokensPerOutput_freeUser,
 					messages: [{role: 'user', content: promptTemplate}],
 				});
+				*/
+
+				output = await client.responses.create({
+					model: aiAPI.chatgpt.models.gpt_5_thinking,
+					input: promptTemplate,
+					// Styr “tænkning”/latens (hurtigst: 'minimal' eller 'low')
+					reasoning: { effort: 'minimal' },      // GPT-5 feature
+					text: { verbosity: 'low' },            // GPT-5 feature, kortere svar
+					max_output_tokens: maxNumberOfTokensPerOutput_freeUser,   // svar-længde i tokens
+				});
 			} else {
-				output = {content: [{text: promptTemplate}]};
+				//output = {content: [{text: promptTemplate}]};
+				output = {output_text: promptTemplate};
 			}
-			improved_content = output.content[0].text;
+			//improved_content = output.content[0].text;
+			improved_content = output.output_text;
+
 			statuscode = 200;
 			feedbackMessages = 'Teksten blev forbedret med succes.';
 			// messageType = 'success';
